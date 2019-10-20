@@ -13,8 +13,9 @@
 
 // prototypes des fonctions
 void init();
-void rectangle();
+void rectangle_plein();
 void triangle();
+void rectangle_vide();
  
 int main(void)
 {
@@ -25,7 +26,7 @@ int main(void)
 		Point a = attendre_clic();
 		if (a.x <= 40 && a.x >= 10 && a.y <= 60 && a.y >= 40) // si l'utilisateur clique sur le rectangle
 		{
-				rectangle();
+				rectangle_vide();
 				actualiser();
 		}
 		
@@ -66,7 +67,7 @@ void init() // initialise la fenêtre et la barre du menu
 	
 }
 
-void rectangle() // créé un rectangle à partir de deux points
+void rectangle_plein() // créé un rectangle à partir de deux points
 { 
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
@@ -100,6 +101,23 @@ void rectangle() // créé un rectangle à partir de deux points
 		dessiner_rectangle(coin3, coin2.x - coin3.x, coin1.y - coin3.y, blanc);
 	}
 	
+}
+
+void rectangle_vide() //2 ou 3 points ??
+{
+	Point coin1 = attendre_clic();
+	Point coin2 = attendre_clic();
+	Point coin3;
+	coin3.x = coin2.x;
+	coin3.y = coin1.y;
+		
+	Point coin4;
+	coin4.x = coin1.x;
+	coin4.y = coin2.y;
+	dessiner_ligne(coin1,coin3,blanc);
+	dessiner_ligne(coin3,coin2,blanc);
+	dessiner_ligne(coin2,coin4,blanc);
+	dessiner_ligne(coin4,coin1,blanc);
 }
 
 void triangle()
