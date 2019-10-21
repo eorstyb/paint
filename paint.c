@@ -17,7 +17,7 @@ void rectangle_plein();
 void triangle();
 void rectangle_vide();
 void segment();
-void polygone();
+
  
 int main(void)
 {
@@ -41,6 +41,12 @@ int main(void)
 		if (a.x >= 10 && a.x <= 40 && a.y >= 150 && a.y <= 180)
 		{
 			segment();
+			actualiser();
+		}
+		
+		if ( a.x >= 10 && a.x <= 40 && a.y>= 210 && a.y <= 240)
+		{
+			rectangle_plein();
 			actualiser();
 		}
 	}
@@ -77,6 +83,10 @@ void init() // initialise la fenêtre et la barre du menu
 	Point segment_1 = {10, 150};
 	Point segment_2 = {40, 180};
 	dessiner_ligne(segment_1,segment_2,blanc);
+	
+	//rectangle_plein
+	Point rectangle_plein1 = {10,210};
+	dessiner_rectangle(rectangle_plein1,30,30,blanc);
 	 
 	
 }
@@ -155,6 +165,5 @@ void segment()
 	dessiner_ligne(segment_1,segment_2,blanc);
 }
 
-void polygone()
-{
+
 	
