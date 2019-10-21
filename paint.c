@@ -17,6 +17,7 @@ void rectangle_plein();
 void triangle();
 void rectangle_vide();
 void segment();
+void polygone();
  
 int main(void)
 {
@@ -153,3 +154,7 @@ void segment()
 	if(segment_1.x <= MARGE || segment_2.x <= MARGE) return ;
 	dessiner_ligne(segment_1,segment_2,blanc);
 }
+
+void polygone()
+{
+	
