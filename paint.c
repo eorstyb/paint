@@ -22,10 +22,13 @@ void charger_image();
 void cercle_plein();
 int power(int a);
 void texte();
- 
+void main_levee();
+
 int main(void)
 {
 	init();
+	actualiser();
+	main_levee();
 	actualiser();
 	while (1)
 	{
@@ -226,4 +229,18 @@ void texte()
 	afficher_texte(str, 10, coin, blanc);
 }
 
+void main_levee()
+{
+	Point a = attendre_clic();
+	Point b;
+	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
+	{
+		reinitialiser_evenements();
+		traiter_evenements();
+		b = deplacement_souris_a_eu_lieu();
+		dessiner_ligne(a,b,blanc);
+		actualiser();
+		a = b;
+	}	
+}
 	
