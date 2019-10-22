@@ -5,6 +5,7 @@
 // importation des librairies
 #include <stdio.h>
 #include "lib/libgraphique.h"
+#include <math.h>
 
 // constantes
 #define H 800
@@ -18,6 +19,9 @@ void triangle();
 void rectangle_vide();
 void segment();
 void charger_image();
+void cercle_plein();
+int power(int a);
+void texte();
  
 int main(void)
 {
@@ -38,19 +42,25 @@ int main(void)
 			actualiser();
 		}
 		
-		if (a.x >= 10 && a.x <= 40 && a.y >= 150 && a.y <= 180)
+		if (a.x >= 10 && a.x <= 40 && a.y >= 150 && a.y <= 180) // si l'utilisateur clique sur le segment
 		{
 			segment();
 			actualiser();
 		}
 		
-		if ( a.x >= 10 && a.x <= 40 && a.y>= 210 && a.y <= 240)
+		if (a.x >= 10 && a.x <= 40 && a.y>= 210 && a.y <= 240) // si l'utilisateur clique sur le rectangle plein
 		{
 			rectangle_plein();
 			actualiser();
 		}
 		
-		if ( a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350)
+		if (a.x >= 10 && a.x <= 40 && a.y >= 265 && a.y <= 295) // si l'utilisateur clique sur le cercle plein
+		{
+			cercle_plein();
+			actualiser();
+		}
+		
+		if ( a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350) // si l'utilisateur clique ur l'image
 		{
 			charger_image();
 			actualiser();
@@ -94,6 +104,10 @@ void init() // initialise la fenêtre et la barre du menu
 	//rectangle_plein
 	Point rectangle_plein1 = {10,210};
 	dessiner_rectangle(rectangle_plein1,30,30,blanc);
+	
+	//cercle plein
+	Point centre = {25, 280};
+	dessiner_disque(centre, 15, blanc);
 	 
 	//image
 	Point image1 = {10,320};
@@ -183,4 +197,33 @@ void charger_image()
 	if(coin_image.x <= MARGE) return ;
 	afficher_image("images/uhahah.bpm",coin_image);
 }
+
+int power(int a)
+{
+	return a*a;
+}
+
+void cercle_plein()
+{
+	Point centre = attendre_clic();
+	Point point = attendre_clic();
+	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
+	dessiner_disque(centre, rayon, blanc);
+}
+
+void texte()
+{
+	int taille;
+	Point coin = {200,100};
+	char str[100];
+	printf("Que voulez vous afficher ?\n");
+	scanf("%s", str);
+	printf("De quelle taille est votre texte ?\n");
+	scanf("%d", &taille);
+	printf("Veuillez cliquer a lendroit ou vous voulez que le texte commence");
+	coin = attendre_clic();
+	
+	afficher_texte(str, 10, coin, blanc);
+}
+
 	
