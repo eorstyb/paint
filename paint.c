@@ -17,7 +17,7 @@ void rectangle_plein();
 void triangle();
 void rectangle_vide();
 void segment();
-
+void charger_image();
  
 int main(void)
 {
@@ -49,6 +49,13 @@ int main(void)
 			rectangle_plein();
 			actualiser();
 		}
+		
+		if ( a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350)
+		{
+			charger_image();
+			actualiser();
+		}
+		
 	}
 	attendre_clic();
 	fermer_fenetre();
@@ -88,6 +95,11 @@ void init() // initialise la fenêtre et la barre du menu
 	Point rectangle_plein1 = {10,210};
 	dessiner_rectangle(rectangle_plein1,30,30,blanc);
 	 
+	//image
+	Point image1 = {10,320};
+	Point image2 = { 14,324};
+	dessiner_rectangle(image1,30,30,blanc);
+	dessiner_rectangle(image2,22,22,bleu);
 	
 }
 
@@ -165,5 +177,10 @@ void segment()
 	dessiner_ligne(segment_1,segment_2,blanc);
 }
 
-
+void charger_image()
+{
+	Point coin_image = attendre_clic();
+	if(coin_image.x <= MARGE) return ;
+	afficher_image("images/uhahah.bpm",coin_image);
+}
 	
