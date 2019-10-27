@@ -23,6 +23,7 @@ void cercle_plein();
 int power(int a);
 void texte();
 void main_levee();
+void gomme();
 
 int main(void)
 {
@@ -63,9 +64,15 @@ int main(void)
 			actualiser();
 		}
 		
-		if ( a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350) // si l'utilisateur clique ur l'image
+		if (a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350) // si l'utilisateur clique ur l'image
 		{
 			charger_image();
+			actualiser();
+		}
+		
+		if (a.x >= 10 && a.x <= 40 && a.y >= 370 && a.y <= 400)
+		{		
+			gomme();
 			actualiser();
 		}
 		
@@ -117,6 +124,10 @@ void init() // initialise la fenêtre et la barre du menu
 	Point image2 = { 14,324};
 	dessiner_rectangle(image1,30,30,blanc);
 	dessiner_rectangle(image2,22,22,bleu);
+	
+	//gomme
+	Point gomme = {10, 370};
+	afficher_image("images/gommee.bmp",gomme);
 	
 }
 
@@ -210,8 +221,12 @@ void cercle_plein()
 {
 	Point centre = attendre_clic();
 	Point point = attendre_clic();
-	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
-	dessiner_disque(centre, rayon, blanc);
+	if (point.x > MARGE + 5 && centre.x > MARGE + 5) 
+	{
+		int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
+		dessiner_disque(centre, rayon, blanc);
+	}
+	else return;
 }
 
 void texte()
@@ -238,9 +253,32 @@ void main_levee()
 		reinitialiser_evenements();
 		traiter_evenements();
 		b = deplacement_souris_a_eu_lieu();
-		dessiner_ligne(a,b,blanc);
-		actualiser();
-		a = b;
+		if (b.x > MARGE + 5)
+		{
+			dessiner_ligne(a,b,blanc);
+			actualiser();
+					a = b;
+		}
+		else return;
+	}	
+}
+
+void gomme()
+{
+	Point b;
+	Point a;
+	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
+	{
+		reinitialiser_evenements();
+		traiter_evenements();
+		b = deplacement_souris_a_eu_lieu();
+		a.x = b.x + 5;
+		a.y = b.y + 5;
+		if (b.x > MARGE + 5)
+		{
+			dessiner_disque(b,5,noir);
+			actualiser();
+		}
 	}	
 }
 	
