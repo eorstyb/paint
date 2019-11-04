@@ -26,6 +26,7 @@ void main_levee();
 void gomme();
 void polygone();
 void remplissage();
+void reinit();
 
 int main(void)
 {
@@ -36,42 +37,49 @@ int main(void)
 		Point a = attendre_clic();
 		if (a.x <= 40 && a.x >= 10 && a.y <= 60 && a.y >= 40) // si l'utilisateur clique sur le rectangle
 		{
-				rectangle_vide();
-				actualiser();
+			reinit();
+			rectangle_vide();
+			actualiser();
 		}
 		
 		if (a.x >= 10 && a.x <= 40 && a.y <= 120 && a.y >= 100) // si l'utilisateur clique sur le triangle
 		{
+			reinit();
 			triangle();
 			actualiser();
 		}
 		
 		if (a.x >= 10 && a.x <= 40 && a.y >= 150 && a.y <= 180) // si l'utilisateur clique sur le segment
 		{
+			reinit();
 			segment();
 			actualiser();
 		}
 		
 		if (a.x >= 10 && a.x <= 40 && a.y>= 210 && a.y <= 240) // si l'utilisateur clique sur le rectangle plein
 		{
+			reinit();
 			rectangle_plein();
 			actualiser();
 		}
 		
 		if (a.x >= 10 && a.x <= 40 && a.y >= 265 && a.y <= 295) // si l'utilisateur clique sur le cercle plein
 		{
+			reinit();
 			cercle_plein();
 			actualiser();
 		}
 		
-		if (a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350) // si l'utilisateur clique ur l'image
+		if (a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350) // si l'utilisateur clique sur l'image
 		{
+			reinit();
 			charger_image();
 			actualiser();
 		}
 		
-		if (a.x >= 10 && a.x <= 40 && a.y >= 370 && a.y <= 400)
+		if (a.x >= 10 && a.x <= 40 && a.y >= 370 && a.y <= 400) // si l'utilisateur clique sur la gomme
 		{		
+			reinit();
 			gomme();
 			actualiser();
 		}
@@ -127,12 +135,66 @@ void init() // initialise la fenêtre et la barre du menu
 	
 	//gomme
 	Point gomme = {10, 370};
-	afficher_image("images/gommee.bmp",gomme);
+	afficher_image("images/gomme.bmp",gomme);
 	
+}
+
+void reinit() //reinitialise les formes du menu pour les remettre à leur couleur d'origine
+{
+	Point p = {MARGE,0};
+	Point q = {MARGE,H};
+	dessiner_ligne(p,q,blanc);
+	//rectangle
+	Point rectangle_1 = {10, 40};
+	Point rectangle_2 = {10, 60};
+	Point rectangle_3 = {40, 40};
+	Point rectangle_4 = {40, 60};
+	dessiner_ligne(rectangle_1, rectangle_2, blanc);
+	dessiner_ligne(rectangle_2, rectangle_4, blanc);
+	dessiner_ligne(rectangle_3, rectangle_4, blanc);
+	dessiner_ligne(rectangle_3, rectangle_1, blanc);
+	
+	//triangle
+	Point a = {25, 100};
+	Point b = {10, 120};
+	Point c = {40, 120};
+	dessiner_ligne(a,b,blanc);
+	dessiner_ligne(b,c,blanc);
+	dessiner_ligne(a,c,blanc);
+	
+	//segment
+	Point segment_1 = {10, 150};
+	Point segment_2 = {40, 180};
+	dessiner_ligne(segment_1,segment_2,blanc);
+	
+	//rectangle_plein
+	Point rectangle_plein1 = {10,210};
+	dessiner_rectangle(rectangle_plein1,30,30,blanc);
+	
+	//cercle plein
+	Point centre = {25, 280};
+	dessiner_disque(centre, 15, blanc);
+	 
+	//image
+	Point image1 = {10,320};
+	Point image2 = { 14,324};
+	dessiner_rectangle(image1,30,30,blanc);
+	dessiner_rectangle(image2,22,22,bleu);
+	
+	//gomme
+	Point gomme = {10, 370};
+	afficher_image("images/gomme.bmp",gomme);
+	
+	actualiser();
 }
 
 void rectangle_plein() // créé un rectangle à partir de deux points
 { 
+	// colorie le rectangle plein du menu en rouge
+	Point rectangle_plein1 = {10,210};
+	dessiner_rectangle(rectangle_plein1,30,30,rouge);
+	actualiser();	
+	
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
 	if (coin1.x <= MARGE || coin2.x <= MARGE) return;
@@ -165,11 +227,22 @@ void rectangle_plein() // créé un rectangle à partir de deux points
 		coin3.y = coin2.y;
 		dessiner_rectangle(coin3, coin2.x - coin3.x, coin1.y - coin3.y, blanc);
 	}
-	
+	reinit();	
 }
 
 void rectangle_vide() //2 ou 3 points ??
 {
+	//le rectangle du menu devient rouge
+	Point rectangle_1 = {10, 40};
+	Point rectangle_2 = {10, 60};
+	Point rectangle_3 = {40, 40};
+	Point rectangle_4 = {40, 60};
+	dessiner_ligne(rectangle_1, rectangle_2, rouge);
+	dessiner_ligne(rectangle_2, rectangle_4, rouge);
+	dessiner_ligne(rectangle_3, rectangle_4, rouge);
+	dessiner_ligne(rectangle_3, rectangle_1, rouge);
+	actualiser();
+	
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
 	if (coin1.x <= MARGE || coin2.x <= MARGE) return;
@@ -184,10 +257,20 @@ void rectangle_vide() //2 ou 3 points ??
 	dessiner_ligne(coin3,coin2,blanc);
 	dessiner_ligne(coin2,coin4,blanc);
 	dessiner_ligne(coin4,coin1,blanc);
+	reinit();
 }
 
 void triangle()
 {
+	//colorie le triangle du menu en rouge
+	Point triangle_a = {25, 100};
+	Point triangle_b = {10, 120};
+	Point triangle_c = {40, 120};
+	dessiner_ligne(triangle_a,triangle_b,rouge);
+	dessiner_ligne(triangle_b,triangle_c,rouge);
+	dessiner_ligne(triangle_a,triangle_c,rouge);
+	actualiser();
+	
 	Point a = attendre_clic();
 	Point b = attendre_clic();
 	Point c = attendre_clic();
@@ -195,14 +278,33 @@ void triangle()
 	dessiner_ligne(a,b,blanc);
 	dessiner_ligne(b,c,blanc);
 	dessiner_ligne(a,c,blanc);
+	reinit();
 }
 
 void segment()
 {
+	//colorie le segment du menu en rouge
+	Point a = {10, 150};
+	Point b = {40, 180};
+	dessiner_ligne(a,b,rouge);
+	actualiser();
+
 	Point segment_1 = attendre_clic();
+	if(segment_1.x <= MARGE)
+	{	
+		reinit();
+		return ;
+	}
+	
 	Point segment_2 = attendre_clic();
-	if(segment_1.x <= MARGE || segment_2.x <= MARGE) return ;
+	
+	if(segment_2.x <= MARGE) 
+	{	
+		reinit();
+		return ;
+	}
 	dessiner_ligne(segment_1,segment_2,blanc);
+	reinit();
 }
 
 void charger_image()
@@ -219,6 +321,11 @@ int power(int a)
 
 void cercle_plein()
 {
+	// colorie le cercle plein du menu en rouge
+	Point center = {25, 280};
+	dessiner_disque(center, 15, rouge);
+	actualiser();
+	
 	Point centre = attendre_clic();
 	Point point = attendre_clic();
 	if (point.x > MARGE + 5 && centre.x > MARGE + 5) 
@@ -227,6 +334,8 @@ void cercle_plein()
 		dessiner_disque(centre, rayon, blanc);
 	}
 	else return;
+	
+	reinit();
 }
 
 void texte()
@@ -265,6 +374,17 @@ void main_levee()
 
 void gomme()
 {
+	// colorie le cadre de la gomme
+	Point trait1 = {10,370};
+	Point trait2 = {38,370};
+	Point trait3 = {10,408};
+	Point trait4 = {38,408};
+	dessiner_ligne(trait1,trait2,rouge);
+	dessiner_ligne(trait1,trait3,rouge);
+	dessiner_ligne(trait2,trait4,rouge);
+	dessiner_ligne(trait3,trait4,rouge);
+	actualiser();
+	
 	Point b;
 	Point a;
 	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
@@ -280,6 +400,7 @@ void gomme()
 			actualiser();
 		}
 	}	
+	reinit();
 }
 
 void polygone()
