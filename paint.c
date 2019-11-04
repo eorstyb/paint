@@ -24,12 +24,12 @@ int power(int a);
 void texte();
 void main_levee();
 void gomme();
+void polygone();
+void remplissage();
 
 int main(void)
 {
 	init();
-	actualiser();
-	main_levee();
 	actualiser();
 	while (1)
 	{
@@ -280,5 +280,31 @@ void gomme()
 			actualiser();
 		}
 	}	
+}
+
+void polygone()
+{
+	Point a = attendre_clic();
+	Point b;
+	Point c = a;
+	reinitialiser_evenements();
+    traiter_evenements();
+	
+	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
+	{
+			//if (touche_a_ete_pressee(SDLK_SPACE) == 1)
+				//break;
+			b = attendre_clic();
+			dessiner_ligne(a,b,blanc);
+			actualiser();
+			a = b;
+			traiter_evenements();
+	}
+	dessiner_ligne(a,c,blanc);
+}
+
+void remplissage(Point p)
+{
+	
 }
 	
