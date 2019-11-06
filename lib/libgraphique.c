@@ -21,6 +21,7 @@
 #include <time.h>
 #include "libgraphique.h"
 
+#define RATIO 1.2 //ratio de rayon pour tracé cercle
 
 ////////////////////////////////////////////////////////////////////////////////
 // 0. variables globales et macros
@@ -32,7 +33,7 @@ Point dernier_clic = {-1,-1};
 int LARGEUR = -1 ;                         // largeur de l'écran en pixels
 int HAUTEUR = -1 ;                         // hauteur de l'écran en pixels
 //char *NOM_POLICE = "../lib/verdana.ttf" ;
-char *NOM_POLICE = "../lib/verdana.ttf" ;
+char *NOM_POLICE = "~/projet/lib/verdana.ttf" ;
 #define octets_par_pixel ecran->format->BytesPerPixel
 #define largeur_ecran (ecran->pitch / 4)
 
@@ -209,6 +210,24 @@ void dessiner_disque(Point centre, int rayon, Couleur couleur)
     }
 }
 
+//dessine un cercle de couleur voulue en donnant rayon et centre
+void dessiner_cercle(Point centre, int rayon, Couleur couleur)
+{
+    int xmin = centre.x - rayon ;
+    int xmax = centre.x + rayon ;
+    int ymin = centre.y - rayon ;
+    int ymax = centre.y + rayon ;
+
+    Point p ;
+
+    for (p.x = xmin; p.x <= xmax ; p.x++)
+    {
+        for (p.y = ymin; p.y <= ymax ; p.y++)
+            if ((centre.x-p.x)*(centre.x-p.x)+(centre.y-p.y)*(centre.y-p.y)<=rayon*rayon+rayon/RATIO &&
+             (centre.x-p.x)*(centre.x-p.x)+(centre.y-p.y)*(centre.y-p.y)>=rayon*rayon-rayon/RATIO)
+                changer_pixel(p, couleur);
+    }
+}
 
 
 

@@ -6,10 +6,11 @@
 #include <stdio.h>
 #include "lib/libgraphique.h"
 #include <math.h>
+#include <string.h>
 
 // constantes
-#define H 800
-#define L 600
+#define H 1800
+#define L 900
 #define MARGE 50
 
 // prototypes des fonctions
@@ -32,6 +33,8 @@ int main(void)
 {
 	init();
 	actualiser();
+	//texte();
+	actualiser();
 	while (1)
 	{
 		Point a = attendre_clic();
@@ -41,7 +44,7 @@ int main(void)
 			rectangle_vide();
 			actualiser();
 		}
-		
+	
 		if (a.x >= 10 && a.x <= 40 && a.y <= 120 && a.y >= 100) // si l'utilisateur clique sur le triangle
 		{
 			reinit();
@@ -84,8 +87,12 @@ int main(void)
 			actualiser();
 		}
 		
+		if (a.x >= H - 30 && a.x <= H-10 && a.y >= 5 && a.y <= 25)
+		{
+			break;
+		}
+		
 	}
-	attendre_clic();
 	fermer_fenetre();
     return 0;
 }
@@ -137,6 +144,10 @@ void init() // initialise la fenêtre et la barre du menu
 	Point gomme = {10, 370};
 	afficher_image("images/gomme.bmp",gomme);
 	
+	//bouton arrêt
+	Point arret = {H-30,5};
+	afficher_image("images/button-red.bmp", arret);
+	
 }
 
 void reinit() //reinitialise les formes du menu pour les remettre à leur couleur d'origine
@@ -184,6 +195,10 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	//gomme
 	Point gomme = {10, 370};
 	afficher_image("images/gomme.bmp",gomme);
+	
+	//bouton arrêt
+	Point arret = {H - 30, 5};
+	afficher_image("images/button-red.bmp", arret);
 	
 	actualiser();
 }
@@ -339,18 +354,18 @@ void cercle_plein()
 }
 
 void texte()
-{
+{	
 	int taille;
-	Point coin = {200,100};
-	char str[100];
+	int i = 0;
+	char str[10];
 	printf("Que voulez vous afficher ?\n");
-	scanf("%s", str);
+	scanf("%8s", str);
+	str[strlen(str) + 1] = '\0';
+	printf("%s\n", str);
 	printf("De quelle taille est votre texte ?\n");
 	scanf("%d", &taille);
-	printf("Veuillez cliquer a lendroit ou vous voulez que le texte commence");
-	coin = attendre_clic();
-	
-	afficher_texte(str, 10, coin, blanc);
+	Point coin = taille_texte(str,taille);
+	afficher_texte(str, taille, coin, blanc);
 }
 
 void main_levee()
@@ -400,6 +415,7 @@ void gomme()
 			actualiser();
 		}
 	}	
+	reinitialiser_evenements();
 	reinit();
 }
 
