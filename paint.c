@@ -15,19 +15,20 @@
 
 // prototypes des fonctions
 void init();
-void rectangle_plein();
-void triangle();
-void rectangle_vide();
-void segment();
+void rectangle_plein(Couleur couleur);
+void triangle(Couleur couleur);
+void rectangle_vide(Couleur couleur);
+void segment(Couleur);
 void charger_image();
-void cercle_plein();
+void cercle_plein(Couleur couleur);
 int power(int a);
 void texte();
-void main_levee();
+void main_levee(Couleur);
 void gomme();
 void polygone();
 void remplissage();
 void reinit();
+Couleur couleur(Point a);
 
 int main(void)
 {
@@ -35,41 +36,42 @@ int main(void)
 	actualiser();
 	//texte();
 	actualiser();
+	Couleur prochaine_couleur = rouge;
 	while (1)
 	{
 		Point a = attendre_clic();
 		if (a.x <= 40 && a.x >= 10 && a.y <= 60 && a.y >= 40) // si l'utilisateur clique sur le rectangle
 		{
 			reinit();
-			rectangle_vide();
+			rectangle_vide(prochaine_couleur);
 			actualiser();
 		}
 	
 		if (a.x >= 10 && a.x <= 40 && a.y <= 120 && a.y >= 100) // si l'utilisateur clique sur le triangle
 		{
 			reinit();
-			triangle();
+			triangle(prochaine_couleur);
 			actualiser();
 		}
 		
 		if (a.x >= 10 && a.x <= 40 && a.y >= 150 && a.y <= 180) // si l'utilisateur clique sur le segment
 		{
 			reinit();
-			segment();
+			segment(prochaine_couleur);
 			actualiser();
 		}
 		
 		if (a.x >= 10 && a.x <= 40 && a.y>= 210 && a.y <= 240) // si l'utilisateur clique sur le rectangle plein
 		{
 			reinit();
-			rectangle_plein();
+			rectangle_plein(prochaine_couleur);
 			actualiser();
 		}
 		
 		if (a.x >= 10 && a.x <= 40 && a.y >= 265 && a.y <= 295) // si l'utilisateur clique sur le cercle plein
 		{
 			reinit();
-			cercle_plein();
+			cercle_plein(prochaine_couleur);
 			actualiser();
 		}
 		
@@ -87,11 +89,15 @@ int main(void)
 			actualiser();
 		}
 		
-		if (a.x >= H - 30 && a.x <= H-10 && a.y >= 5 && a.y <= 25)
+		if (a.x >= H - 30 && a.x <= H-10 && a.y >= 5 && a.y <= 25) // si l'utilisateur clique sur le bouton rouge
 		{
 			break;
 		}
 		
+		if(a.x >= 60 && a.x <= 700 && a.y >= L - 200 && a.y <= L) // si l'utilisateur clique sur une couleur
+		{
+			prochaine_couleur = couleur(a);
+		} 
 	}
 	fermer_fenetre();
     return 0;
@@ -148,6 +154,8 @@ void init() // initialise la fenêtre et la barre du menu
 	Point arret = {H-30,5};
 	afficher_image("images/button-red.bmp", arret);
 	
+	//couleur
+	
 }
 
 void reinit() //reinitialise les formes du menu pour les remettre à leur couleur d'origine
@@ -203,7 +211,7 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	actualiser();
 }
 
-void rectangle_plein() // créé un rectangle à partir de deux points
+void rectangle_plein(Couleur couleur) // créé un rectangle à partir de deux points
 { 
 	// colorie le rectangle plein du menu en rouge
 	Point rectangle_plein1 = {10,210};
@@ -213,14 +221,14 @@ void rectangle_plein() // créé un rectangle à partir de deux points
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
 	if (coin1.x <= MARGE || coin2.x <= MARGE) return;
-	if (coin1.x <=  coin2.x && coin1.y <= coin2.y)  dessiner_rectangle(coin1, coin2.x - coin1.x, coin2.y - coin1.y, blanc);
+	if (coin1.x <=  coin2.x && coin1.y <= coin2.y)  dessiner_rectangle(coin1, coin2.x - coin1.x, coin2.y - coin1.y, couleur);
 	
 	else if (coin1.x <= coin2.x && coin1.y >= coin2.y) 
 	{
 		Point coin3;
 		coin3.x = coin1.x;
 		coin3.y = coin2.y;
-		dessiner_rectangle(coin3, coin2.x - coin3.x, coin1.y - coin3.y, blanc);
+		dessiner_rectangle(coin3, coin2.x - coin3.x, coin1.y - coin3.y, couleur);
 	}
 	
 	else if (coin1.x >= coin2.x && coin1.y >= coin2.y)
@@ -228,7 +236,7 @@ void rectangle_plein() // créé un rectangle à partir de deux points
 		Point coin3 = coin1;
 		coin1 = coin2;
 		coin2 = coin3;
-		dessiner_rectangle(coin1, coin2.x - coin1.x, coin2.y - coin1.y, blanc);
+		dessiner_rectangle(coin1, coin2.x - coin1.x, coin2.y - coin1.y, couleur);
 	}
 	
 	else 
@@ -240,12 +248,12 @@ void rectangle_plein() // créé un rectangle à partir de deux points
 		Point coin3;
 		coin3.x = coin1.x;
 		coin3.y = coin2.y;
-		dessiner_rectangle(coin3, coin2.x - coin3.x, coin1.y - coin3.y, blanc);
+		dessiner_rectangle(coin3, coin2.x - coin3.x, coin1.y - coin3.y, couleur);
 	}
 	reinit();	
 }
 
-void rectangle_vide() //2 ou 3 points ??
+void rectangle_vide(Couleur couleur) 
 {
 	//le rectangle du menu devient rouge
 	Point rectangle_1 = {10, 40};
@@ -268,14 +276,14 @@ void rectangle_vide() //2 ou 3 points ??
 	Point coin4;
 	coin4.x = coin1.x;
 	coin4.y = coin2.y;
-	dessiner_ligne(coin1,coin3,blanc);
-	dessiner_ligne(coin3,coin2,blanc);
-	dessiner_ligne(coin2,coin4,blanc);
-	dessiner_ligne(coin4,coin1,blanc);
+	dessiner_ligne(coin1,coin3,couleur);
+	dessiner_ligne(coin3,coin2,couleur);
+	dessiner_ligne(coin2,coin4,couleur);
+	dessiner_ligne(coin4,coin1,couleur);
 	reinit();
 }
 
-void triangle()
+void triangle(Couleur couleur)
 {
 	//colorie le triangle du menu en rouge
 	Point triangle_a = {25, 100};
@@ -290,13 +298,13 @@ void triangle()
 	Point b = attendre_clic();
 	Point c = attendre_clic();
 	if (a.x <= MARGE || b.x <= MARGE || c.x <= MARGE) return;
-	dessiner_ligne(a,b,blanc);
-	dessiner_ligne(b,c,blanc);
-	dessiner_ligne(a,c,blanc);
+	dessiner_ligne(a,b,couleur);
+	dessiner_ligne(b,c,couleur);
+	dessiner_ligne(a,c,couleur);
 	reinit();
 }
 
-void segment()
+void segment(Couleur couleur)
 {
 	//colorie le segment du menu en rouge
 	Point a = {10, 150};
@@ -318,7 +326,7 @@ void segment()
 		reinit();
 		return ;
 	}
-	dessiner_ligne(segment_1,segment_2,blanc);
+	dessiner_ligne(segment_1,segment_2,couleur);
 	reinit();
 }
 
@@ -334,7 +342,7 @@ int power(int a)
 	return a*a;
 }
 
-void cercle_plein()
+void cercle_plein(Couleur couleur)
 {
 	// colorie le cercle plein du menu en rouge
 	Point center = {25, 280};
@@ -346,7 +354,7 @@ void cercle_plein()
 	if (point.x > MARGE + 5 && centre.x > MARGE + 5) 
 	{
 		int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
-		dessiner_disque(centre, rayon, blanc);
+		dessiner_disque(centre, rayon, couleur);
 	}
 	else return;
 	
@@ -356,7 +364,6 @@ void cercle_plein()
 void texte()
 {	
 	int taille;
-	int i = 0;
 	char str[10];
 	printf("Que voulez vous afficher ?\n");
 	scanf("%8s", str);
@@ -368,7 +375,7 @@ void texte()
 	afficher_texte(str, taille, coin, blanc);
 }
 
-void main_levee()
+void main_levee(Couleur couleur)
 {
 	Point a = attendre_clic();
 	Point b;
@@ -401,14 +408,11 @@ void gomme()
 	actualiser();
 	
 	Point b;
-	Point a;
 	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
 	{
 		reinitialiser_evenements();
 		traiter_evenements();
 		b = deplacement_souris_a_eu_lieu();
-		a.x = b.x + 5;
-		a.y = b.y + 5;
 		if (b.x > MARGE + 5)
 		{
 			dessiner_disque(b,5,noir);
@@ -444,4 +448,8 @@ void remplissage(Point p)
 {
 	
 }
-	
+
+Couleur couleur(Point a)
+{
+	return blanc;
+}
