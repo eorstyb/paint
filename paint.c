@@ -11,7 +11,7 @@
 // constantes
 #define H 1800
 #define L 900
-#define MARGE 50
+#define MARGE 230
 
 // prototypes des fonctions
 void init();
@@ -23,23 +23,29 @@ void charger_image();
 void cercle_plein(Couleur couleur);
 int power(int a);
 void texte();
-void main_levee(Couleur);
+void main_levee(Couleur couleur);
 void gomme();
-void polygone();
 void remplissage();
 void reinit();
+void clear();
 Couleur couleur(Point a);
 
 int main(void)
 {
 	init();
 	actualiser();
-	//texte();
-	actualiser();
 	Couleur prochaine_couleur = rouge;
+	Point a;
+	main_levee(prochaine_couleur);
 	while (1)
-	{
-		Point a = attendre_clic();
+	{	
+		/*while (1)
+		{
+			a = attendre_clic();
+			printf("a.x = %d; a.y = %d\n", a.x, a.y);
+			actualiser();
+		}*/
+		a = attendre_clic();
 		if (a.x <= 40 && a.x >= 10 && a.y <= 60 && a.y >= 40) // si l'utilisateur clique sur le rectangle
 		{
 			reinit();
@@ -78,6 +84,7 @@ int main(void)
 		if (a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350) // si l'utilisateur clique sur l'image
 		{
 			reinit();
+			clear();
 			charger_image();
 			actualiser();
 		}
@@ -89,10 +96,18 @@ int main(void)
 			actualiser();
 		}
 		
+		if (a.x >= 10 && a.x <= 60 && a.y >= 430 && a.y <= 490) // si l'utilisateur clique sur le stylo
+		{
+				reinit();
+				main_levee(prochaine_couleur);
+				actualiser();
+		}
+		
 		if (a.x >= H - 30 && a.x <= H-10 && a.y >= 5 && a.y <= 25) // si l'utilisateur clique sur le bouton rouge
 		{
 			break;
 		}
+		
 		
 		if(a.x >= 60 && a.x <= 700 && a.y >= L - 200 && a.y <= L) // si l'utilisateur clique sur une couleur
 		{
@@ -154,8 +169,14 @@ void init() // initialise la fenêtre et la barre du menu
 	Point arret = {H-30,5};
 	afficher_image("images/button-red.bmp", arret);
 	
-	//couleur
+	//palette
+	Point palette = {10,L-200};
+	afficher_image("images/palette.bmp", palette);
 	
+	
+	//main levée
+	Point stylo = {10, 430};
+	afficher_image("images/stylo.bmp", stylo);
 }
 
 void reinit() //reinitialise les formes du menu pour les remettre à leur couleur d'origine
@@ -261,6 +282,7 @@ void rectangle_vide(Couleur couleur)
 	Point rectangle_3 = {40, 40};
 	Point rectangle_4 = {40, 60};
 	dessiner_ligne(rectangle_1, rectangle_2, rouge);
+
 	dessiner_ligne(rectangle_2, rectangle_4, rouge);
 	dessiner_ligne(rectangle_3, rectangle_4, rouge);
 	dessiner_ligne(rectangle_3, rectangle_1, rouge);
@@ -332,6 +354,7 @@ void segment(Couleur couleur)
 
 void charger_image()
 {
+
 	Point coin_image = attendre_clic();
 	if(coin_image.x <= MARGE) return ;
 	afficher_image("images/uhahah.bpm",coin_image);
@@ -351,14 +374,17 @@ void cercle_plein(Couleur couleur)
 	
 	Point centre = attendre_clic();
 	Point point = attendre_clic();
-	if (point.x > MARGE + 5 && centre.x > MARGE + 5) 
+	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
+	if (point.x > MARGE + 5 && centre.x > MARGE + 5 && centre.x - rayon > MARGE) 
 	{
-		int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
 		dessiner_disque(centre, rayon, couleur);
+		reinit();
 	}
-	else return;
-	
-	reinit();
+	else 
+	{
+		reinit();
+		return;
+	}
 }
 
 void texte()
@@ -386,11 +412,16 @@ void main_levee(Couleur couleur)
 		b = deplacement_souris_a_eu_lieu();
 		if (b.x > MARGE + 5)
 		{
-			dessiner_ligne(a,b,blanc);
+			dessiner_ligne(a,b,couleur);
 			actualiser();
 					a = b;
 		}
-		else return;
+		else 
+		{
+			reinitialiser_evenements();
+			reinit();
+			return;
+		}
 	}	
 }
 
@@ -399,9 +430,11 @@ void gomme()
 	// colorie le cadre de la gomme
 	Point trait1 = {10,370};
 	Point trait2 = {38,370};
+
 	Point trait3 = {10,408};
 	Point trait4 = {38,408};
 	dessiner_ligne(trait1,trait2,rouge);
+
 	dessiner_ligne(trait1,trait3,rouge);
 	dessiner_ligne(trait2,trait4,rouge);
 	dessiner_ligne(trait3,trait4,rouge);
@@ -444,12 +477,22 @@ void polygone()
 	dessiner_ligne(a,c,blanc);
 }
 
-void remplissage(Point p)
+Couleur couleur(Point a)
+
 {
-	
+	if (a.x >= 162 && a.x <= 194 && a.y >= 754 && a.y <= 765) {return blanc;}
+	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return noir;}
+	if (a.x >= 84 && a.x <= 117 && a.y >= 759 && a.y <= 778) {return marron;}
+	/*if (a.x >= 46 && a.x <= 78 && a.y >= 759 && a.y <= 769) {return bleu;}
+	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return vert;}
+	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return jaune;}
+	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return orange;}
+	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return rouge;}*/
+	return blanc;
 }
 
-Couleur couleur(Point a)
+void clear()
 {
-	return blanc;
+		Point a = {MARGE+1, 0};
+		dessiner_rectangle(a, H - a.x, L, noir);
 }
