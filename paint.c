@@ -275,7 +275,6 @@ void rectangle_plein(Couleur couleur) // créé un rectangle à partir de deux p
 	
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
-	//if (coin1.x <= MARGE || coin2.x <= MARGE) return;
 	if (coin1.x <=  coin2.x && coin1.y <= coin2.y)  dessiner_rectangle(coin1, coin2.x - coin1.x, coin2.y - coin1.y, couleur);
 	
 	else if (coin1.x <= coin2.x && coin1.y >= coin2.y) 
@@ -324,7 +323,6 @@ void rectangle_vide(Couleur couleur)
 	
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
-	//if (coin1.x <= MARGE || coin2.x <= MARGE) return;
 	Point coin3;
 	coin3.x = coin2.x;
 	coin3.y = coin1.y;
@@ -352,8 +350,12 @@ void triangle(Couleur couleur)
 	
 	Point a = attendre_clic();
 	Point b = attendre_clic();
+	dessiner_ligne(a,b,couleur);
+	actualiser();
 	Point c = attendre_clic();
-	//if (a.x <= MARGE || b.x <= MARGE || c.x <= MARGE) return;
+	dessiner_ligne(b,c,couleur);
+	dessiner_ligne(a,c,couleur);
+	actualiser();
 	dessiner_ligne(a,b,couleur);
 	dessiner_ligne(b,c,couleur);
 	dessiner_ligne(a,c,couleur);
@@ -442,21 +444,25 @@ void main_levee(Couleur couleur)
 	Point b;
 	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
 	{
-		reinitialiser_evenements();
-		traiter_evenements();
-		b = deplacement_souris_a_eu_lieu();
-		if (b.x > MARGE + 5)
-		{
-			dessiner_ligne(a,b,couleur);
-			actualiser();
-					a = b;
-		}
-		else 
+		while (touche_a_ete_pressee(SDL_BUTTON_RIGHT) == 0)
 		{
 			reinitialiser_evenements();
-			reinit();
-			return;
+			traiter_evenements();
+			b = deplacement_souris_a_eu_lieu();
+			if (b.x > MARGE + 5)
+			{
+				dessiner_ligne(a,b,couleur);
+				actualiser();
+						a = b;
+			}
+			else 
+			{
+				reinitialiser_evenements();
+				reinit();
+				return;
+			}
 		}
+		a = attendre_clic();
 	}	
 }
 
@@ -481,9 +487,9 @@ void gomme()
 		reinitialiser_evenements();
 		traiter_evenements();
 		b = deplacement_souris_a_eu_lieu();
-		if (b.x > MARGE + 5)
+		if (b.x > MARGE + 20)
 		{
-			dessiner_disque(b,5,noir);
+			dessiner_disque(b,20,darkgray);
 			actualiser();
 		}
 	}	
