@@ -9,8 +9,8 @@
 #include <string.h>
 
 // constantes
-#define H 1800
-#define L 900
+#define H 1500
+#define L 1000
 #define MARGE 230
 
 // prototypes des fonctions
@@ -129,8 +129,11 @@ int main(void)
 void init() // initialise la fenêtre et la barre du menu
 {
 	ouvrir_fenetre(H,L);
-	animation();
 	Point coin = {0,0};
+	dessiner_rectangle(coin,H,L,blanc);
+	Point logo = {650,400};
+	afficher_image("images/logo.bmp", logo);
+	animation();
 	dessiner_rectangle(coin,H,L,darkgray);
 	dessiner_rectangle(coin,MARGE,L,violet);
 	Point p = {MARGE,0};
@@ -555,47 +558,53 @@ void animation()
 {
 	//Point rectangle = {0,0};
 	//dessiner_rectangle(rectangle, H, L, blanc);
-	Point coin = {800, 400};
+	Point coin = {690, 600};
 	int compteur = 0;
 	while(compteur < 3)
 	{
-		afficher_image("images/Loading/1.bmp",coin);
+		afficher_image("images/Chargement/1.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/2.bmp",coin);
+		afficher_image("images/Chargement/2.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/3.bmp",coin);
+		afficher_image("images/Chargement/3.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/4.bmp",coin);
+		afficher_image("images/Chargement/4.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/5.bmp",coin);
+		afficher_image("images/Chargement/5.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/6.bmp",coin);
+		afficher_image("images/Chargement/6.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/7.bmp",coin);
+		afficher_image("images/Chargement/7.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/8.bmp",coin);
+		afficher_image("images/Chargement/8.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/9.bmp",coin);
+		afficher_image("images/Chargement/9.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/10.bmp",coin);
+		afficher_image("images/Chargement/10.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/11.bmp",coin);
+		afficher_image("images/Chargement/11.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/12.bmp",coin);
+		afficher_image("images/Chargement/12.bmp",coin);
 		attente(70);
 		actualiser();
-		afficher_image("images/Loading/13.bmp",coin);
+		afficher_image("images/Chargement/13.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Chargement/14.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Chargement/15.bmp",coin);
 		attente(70);
 		actualiser();
 		compteur += 1;
