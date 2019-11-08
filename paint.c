@@ -28,6 +28,7 @@ void gomme();
 void remplissage();
 void reinit();
 void clear();
+void animation();
 Couleur couleur(Point a);
 
 int main(void)
@@ -38,6 +39,7 @@ int main(void)
 	actualiser();
 	Couleur prochaine_couleur = rouge;
 	Point a;
+	polygone();
 	while (1)
 	{	
 		/*while (1)
@@ -127,6 +129,7 @@ int main(void)
 void init() // initialise la fenêtre et la barre du menu
 {
 	ouvrir_fenetre(H,L);
+	animation();
 	Point coin = {0,0};
 	dessiner_rectangle(coin,H,L,darkgray);
 	dessiner_rectangle(coin,MARGE,L,violet);
@@ -193,6 +196,10 @@ void init() // initialise la fenêtre et la barre du menu
 	//main levée
 	Point stylo = {10, 430};
 	afficher_image("images/stylo.bmp", stylo);
+	
+	//polygone
+	Point polygone = {10, 480};
+	afficher_image("images/polygone.bmp", polygone);
 }
 
 void reinit() //reinitialise les formes du menu pour les remettre à leur couleur d'origine
@@ -502,20 +509,26 @@ void polygone()
 	Point a = attendre_clic();
 	Point b;
 	Point c = a;
-	reinitialiser_evenements();
-    traiter_evenements();
-	
-	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
-	{
-			//if (touche_a_ete_pressee(SDLK_SPACE) == 1)
-				//break;
-			b = attendre_clic();
-			dessiner_ligne(a,b,blanc);
-			actualiser();
-			a = b;
-			traiter_evenements();
+	int i = 1;
+		
+	while (i == 1)
+	{	
+			b = attendre_clic_gauche_droite();
+			if (b.x > 0)
+			{
+				dessiner_ligne(a,b,blanc);
+				actualiser();
+				a = b;
+			}
+			
+			else 
+			{
+				i = 0;
+			}
 	}
+	reinitialiser_evenements();
 	dessiner_ligne(a,c,blanc);
+	reinit();
 }
 
 Couleur couleur(Point a)
@@ -536,4 +549,55 @@ void clear()
 		Point a = {MARGE+1, 0};
 		dessiner_rectangle(a, H - a.x, L, darkgray);
 		reinit();
+}
+
+void animation()
+{
+	//Point rectangle = {0,0};
+	//dessiner_rectangle(rectangle, H, L, blanc);
+	Point coin = {800, 400};
+	int compteur = 0;
+	while(compteur < 3)
+	{
+		afficher_image("images/Loading/1.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/2.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/3.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/4.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/5.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/6.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/7.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/8.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/9.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/10.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/11.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/12.bmp",coin);
+		attente(70);
+		actualiser();
+		afficher_image("images/Loading/13.bmp",coin);
+		attente(70);
+		actualiser();
+		compteur += 1;
+	}
 }
