@@ -34,9 +34,10 @@ int main(void)
 {
 	init();
 	actualiser();
+	//texte();
+	actualiser();
 	Couleur prochaine_couleur = rouge;
 	Point a;
-	main_levee(prochaine_couleur);
 	while (1)
 	{	
 		/*while (1)
@@ -109,7 +110,7 @@ int main(void)
 		}
 		
 		
-		if(a.x >= 60 && a.x <= 700 && a.y >= L - 200 && a.y <= L) // si l'utilisateur clique sur une couleur
+		if(a.x >= 27 && a.x <= 194 && a.y >= 723 && a.y <= 865) // si l'utilisateur clique sur une couleur
 		{
 			prochaine_couleur = couleur(a);
 		} 
@@ -120,10 +121,14 @@ int main(void)
 
 void init() // initialise la fenêtre et la barre du menu
 {
-	ouvrir_fenetre(H,L);	
+	ouvrir_fenetre(H,L);
+	Point coin = {0,0};
+	dessiner_rectangle(coin,H,L,darkgray);
+	dessiner_rectangle(coin,MARGE,L,violet);
 	Point p = {MARGE,0};
 	Point q = {MARGE,H};
 	dessiner_ligne(p,q,blanc);
+	
 	//rectangle
 	Point rectangle_1 = {10, 40};
 	Point rectangle_2 = {10, 60};
@@ -166,8 +171,12 @@ void init() // initialise la fenêtre et la barre du menu
 	afficher_image("images/gomme.bmp",gomme);
 	
 	//bouton arrêt
-	Point arret = {H-30,5};
+	Point arret = {H-30,10};
 	afficher_image("images/button-red.bmp", arret);
+	
+	//bouton clear
+	Point clear = {H - 60,10};
+	afficher_image("images/bouton-bleu.bmp", clear);
 	
 	//palette
 	Point palette = {10,L-200};
@@ -229,6 +238,19 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	Point arret = {H - 30, 5};
 	afficher_image("images/button-red.bmp", arret);
 	
+	//bouton clear
+	Point clear = {H - 60,5};
+	afficher_image("images/bouton-bleu.bmp", clear);
+	
+	//palette
+	Point palette = {10,L-200};
+	afficher_image("images/palette.bmp", palette);
+	
+	
+	//main levée
+	Point stylo = {10, 430};
+	afficher_image("images/stylo.bmp", stylo);
+	
 	actualiser();
 }
 
@@ -236,7 +258,7 @@ void rectangle_plein(Couleur couleur) // créé un rectangle à partir de deux p
 { 
 	// colorie le rectangle plein du menu en rouge
 	Point rectangle_plein1 = {10,210};
-	dessiner_rectangle(rectangle_plein1,30,30,rouge);
+	dessiner_rectangle(rectangle_plein1,30,30,couleur);
 	actualiser();	
 	
 	Point coin1 = attendre_clic();
@@ -281,11 +303,11 @@ void rectangle_vide(Couleur couleur)
 	Point rectangle_2 = {10, 60};
 	Point rectangle_3 = {40, 40};
 	Point rectangle_4 = {40, 60};
-	dessiner_ligne(rectangle_1, rectangle_2, rouge);
+	dessiner_ligne(rectangle_1, rectangle_2, couleur);
 
-	dessiner_ligne(rectangle_2, rectangle_4, rouge);
-	dessiner_ligne(rectangle_3, rectangle_4, rouge);
-	dessiner_ligne(rectangle_3, rectangle_1, rouge);
+	dessiner_ligne(rectangle_2, rectangle_4, couleur);
+	dessiner_ligne(rectangle_3, rectangle_4, couleur);
+	dessiner_ligne(rectangle_3, rectangle_1, couleur);
 	actualiser();
 	
 	Point coin1 = attendre_clic();
@@ -311,9 +333,9 @@ void triangle(Couleur couleur)
 	Point triangle_a = {25, 100};
 	Point triangle_b = {10, 120};
 	Point triangle_c = {40, 120};
-	dessiner_ligne(triangle_a,triangle_b,rouge);
-	dessiner_ligne(triangle_b,triangle_c,rouge);
-	dessiner_ligne(triangle_a,triangle_c,rouge);
+	dessiner_ligne(triangle_a,triangle_b,couleur);
+	dessiner_ligne(triangle_b,triangle_c,couleur);
+	dessiner_ligne(triangle_a,triangle_c,couleur);
 	actualiser();
 	
 	Point a = attendre_clic();
@@ -331,7 +353,7 @@ void segment(Couleur couleur)
 	//colorie le segment du menu en rouge
 	Point a = {10, 150};
 	Point b = {40, 180};
-	dessiner_ligne(a,b,rouge);
+	dessiner_ligne(a,b,couleur);
 	actualiser();
 
 	Point segment_1 = attendre_clic();
@@ -369,7 +391,7 @@ void cercle_plein(Couleur couleur)
 {
 	// colorie le cercle plein du menu en rouge
 	Point center = {25, 280};
-	dessiner_disque(center, 15, rouge);
+	dessiner_disque(center, 15, couleur);
 	actualiser();
 	
 	Point centre = attendre_clic();
@@ -390,15 +412,16 @@ void cercle_plein(Couleur couleur)
 void texte()
 {	
 	int taille;
-	char str[10];
+	char str[100];
+	char phrase[100];
 	printf("Que voulez vous afficher ?\n");
-	scanf("%8s", str);
-	str[strlen(str) + 1] = '\0';
-	printf("%s\n", str);
+	scanf("%[/n]s", str);
+	sscanf(str, "%s",phrase);
 	printf("De quelle taille est votre texte ?\n");
 	scanf("%d", &taille);
-	Point coin = taille_texte(str,taille);
-	afficher_texte(str, taille, coin, blanc);
+	printf("Veuillez cliquer svp");
+	Point coin = attendre_clic();
+	afficher_texte(phrase, taille, coin, blanc);
 }
 
 void main_levee(Couleur couleur)
@@ -433,11 +456,11 @@ void gomme()
 
 	Point trait3 = {10,408};
 	Point trait4 = {38,408};
-	dessiner_ligne(trait1,trait2,rouge);
+	dessiner_ligne(trait1,trait2,couleur);
 
-	dessiner_ligne(trait1,trait3,rouge);
-	dessiner_ligne(trait2,trait4,rouge);
-	dessiner_ligne(trait3,trait4,rouge);
+	dessiner_ligne(trait1,trait3,couleur);
+	dessiner_ligne(trait2,trait4,couleur);
+	dessiner_ligne(trait3,trait4,couleur);
 	actualiser();
 	
 	Point b;
@@ -478,16 +501,15 @@ void polygone()
 }
 
 Couleur couleur(Point a)
-
 {
 	if (a.x >= 162 && a.x <= 194 && a.y >= 754 && a.y <= 765) {return blanc;}
-	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return noir;}
-	if (a.x >= 84 && a.x <= 117 && a.y >= 759 && a.y <= 778) {return marron;}
-	/*if (a.x >= 46 && a.x <= 78 && a.y >= 759 && a.y <= 769) {return bleu;}
-	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return vert;}
-	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return jaune;}
-	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return orange;}
-	if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return rouge;}*/
+    if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return noir;}
+    if (a.x >= 84 && a.x <= 117 && a.y >= 759 && a.y <= 778) {return marron;}
+    if (a.x >= 46 && a.x <= 78 && a.y >= 759 && a.y <= 769) {return bleu;}
+    if (a.x >= 27  && a.x <= 61 && a.y >= 800 && a.y <= 814) {return vert;}
+    if (a.x >= 63 && a.x <= 90 && a.y >= 823 && a.y <= 842) {return jaune;}
+    if (a.x >= 104 && a.x <= 133 && a.y >= 822 && a.y <= 852) {return orange;}
+    if (a.x >= 146 && a.x <= 178 && a.y >= 817 && a.y <= 843) {return rouge;}
 	return blanc;
 }
 
