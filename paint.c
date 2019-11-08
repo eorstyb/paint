@@ -85,7 +85,6 @@ int main(void)
 		if (a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350) // si l'utilisateur clique sur l'image
 		{
 			reinit();
-			clear();
 			charger_image();
 			actualiser();
 		}
@@ -114,6 +113,12 @@ int main(void)
 		{
 			prochaine_couleur = couleur(a);
 		} 
+		
+		if (a.x >= H - 60 && a.x <= H-40 && a.y >= 10 && a.y <= 30)
+		{
+			clear();
+			actualiser();
+		}
 	}
 	fermer_fenetre();
     return 0;
@@ -128,6 +133,8 @@ void init() // initialise la fenêtre et la barre du menu
 	Point p = {MARGE,0};
 	Point q = {MARGE,H};
 	dessiner_ligne(p,q,blanc);
+	Point palette_rectangle = {0,L-200};
+	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
 	
 	//rectangle
 	Point rectangle_1 = {10, 40};
@@ -171,11 +178,11 @@ void init() // initialise la fenêtre et la barre du menu
 	afficher_image("images/gomme.bmp",gomme);
 	
 	//bouton arrêt
-	Point arret = {H-30,10};
+	Point arret = {H-30,5};
 	afficher_image("images/button-red.bmp", arret);
 	
 	//bouton clear
-	Point clear = {H - 60,10};
+	Point clear = {H - 60,5};
 	afficher_image("images/bouton-bleu.bmp", clear);
 	
 	//palette
@@ -190,9 +197,14 @@ void init() // initialise la fenêtre et la barre du menu
 
 void reinit() //reinitialise les formes du menu pour les remettre à leur couleur d'origine
 {
+	Point coin = {0,0};
+	dessiner_rectangle(coin,MARGE,L,violet);
 	Point p = {MARGE,0};
 	Point q = {MARGE,H};
 	dessiner_ligne(p,q,blanc);
+	Point palette_rectangle = {0,L-200};
+	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
+	
 	//rectangle
 	Point rectangle_1 = {10, 40};
 	Point rectangle_2 = {10, 60};
@@ -263,7 +275,7 @@ void rectangle_plein(Couleur couleur) // créé un rectangle à partir de deux p
 	
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
-	if (coin1.x <= MARGE || coin2.x <= MARGE) return;
+	//if (coin1.x <= MARGE || coin2.x <= MARGE) return;
 	if (coin1.x <=  coin2.x && coin1.y <= coin2.y)  dessiner_rectangle(coin1, coin2.x - coin1.x, coin2.y - coin1.y, couleur);
 	
 	else if (coin1.x <= coin2.x && coin1.y >= coin2.y) 
@@ -312,7 +324,7 @@ void rectangle_vide(Couleur couleur)
 	
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
-	if (coin1.x <= MARGE || coin2.x <= MARGE) return;
+	//if (coin1.x <= MARGE || coin2.x <= MARGE) return;
 	Point coin3;
 	coin3.x = coin2.x;
 	coin3.y = coin1.y;
@@ -341,7 +353,7 @@ void triangle(Couleur couleur)
 	Point a = attendre_clic();
 	Point b = attendre_clic();
 	Point c = attendre_clic();
-	if (a.x <= MARGE || b.x <= MARGE || c.x <= MARGE) return;
+	//if (a.x <= MARGE || b.x <= MARGE || c.x <= MARGE) return;
 	dessiner_ligne(a,b,couleur);
 	dessiner_ligne(b,c,couleur);
 	dessiner_ligne(a,c,couleur);
@@ -357,7 +369,7 @@ void segment(Couleur couleur)
 	actualiser();
 
 	Point segment_1 = attendre_clic();
-	if(segment_1.x <= MARGE)
+	//if(segment_1.x <= MARGE)
 	{	
 		reinit();
 		return ;
@@ -378,7 +390,7 @@ void charger_image()
 {
 
 	Point coin_image = attendre_clic();
-	if(coin_image.x <= MARGE) return ;
+	//if(coin_image.x <= MARGE) return ;
 	afficher_image("images/uhahah.bpm",coin_image);
 }
 
@@ -397,16 +409,16 @@ void cercle_plein(Couleur couleur)
 	Point centre = attendre_clic();
 	Point point = attendre_clic();
 	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
-	if (point.x > MARGE + 5 && centre.x > MARGE + 5 && centre.x - rayon > MARGE) 
-	{
+	//if (point.x > MARGE + 5 && centre.x > MARGE + 5 && centre.x - rayon > MARGE) 
+	//{
 		dessiner_disque(centre, rayon, couleur);
 		reinit();
-	}
-	else 
-	{
-		reinit();
-		return;
-	}
+	//}
+	//else 
+	//{
+		//reinit();
+		//return;
+	//}
 }
 
 void texte()
@@ -516,5 +528,6 @@ Couleur couleur(Point a)
 void clear()
 {
 		Point a = {MARGE+1, 0};
-		dessiner_rectangle(a, H - a.x, L, noir);
+		dessiner_rectangle(a, H - a.x, L, darkgray);
+		reinit();
 }
