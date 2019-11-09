@@ -9,8 +9,8 @@
 #include <string.h>
 
 // constantes
-#define H 1500
-#define L 1000
+#define H 1800	
+#define L 900
 #define MARGE 230
 
 // prototypes des fonctions
@@ -35,11 +35,8 @@ int main(void)
 {
 	init();
 	actualiser();
-	//texte();
-	actualiser();
 	Couleur prochaine_couleur = rouge;
 	Point a;
-	polygone();
 	while (1)
 	{	
 		/*while (1)
@@ -131,7 +128,7 @@ void init() // initialise la fenêtre et la barre du menu
 	ouvrir_fenetre(H,L);
 	Point coin = {0,0};
 	dessiner_rectangle(coin,H,L,blanc);
-	Point logo = {650,400};
+	Point logo = {(H/2) - 135,(L/2) - 150};
 	afficher_image("images/logo.bmp", logo);
 	animation();
 	dessiner_rectangle(coin,H,L,darkgray);
@@ -536,7 +533,7 @@ void polygone()
 
 Couleur couleur(Point a)
 {
-	if (a.x >= 162 && a.x <= 194 && a.y >= 754 && a.y <= 765) {return blanc;}
+	if (a.x >= 162 && a.x <= 194 && a.y >= L - 150 && a.y <= L - 125) {return blanc;}
     if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return noir;}
     if (a.x >= 84 && a.x <= 117 && a.y >= 759 && a.y <= 778) {return marron;}
     if (a.x >= 46 && a.x <= 78 && a.y >= 759 && a.y <= 769) {return bleu;}
@@ -556,9 +553,7 @@ void clear()
 
 void animation()
 {
-	//Point rectangle = {0,0};
-	//dessiner_rectangle(rectangle, H, L, blanc);
-	Point coin = {690, 600};
+	Point coin = {(H/2) - 100, (L/2)};
 	int compteur = 0;
 	while(compteur < 3)
 	{
