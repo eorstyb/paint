@@ -21,11 +21,12 @@ void rectangle_vide(Couleur couleur);
 void segment(Couleur);
 void charger_image();
 void cercle_plein(Couleur couleur);
+void cercle_vide(Couleur couleur);
 int power(int a);
 void texte();
 void main_levee(Couleur couleur);
-void gomme();
-void remplissage();
+void gomme(Couleur couleur);
+void polygone(Couleur couleur);
 void reinit();
 void clear();
 void animation();
@@ -81,27 +82,41 @@ int main(void)
 			actualiser();
 		}
 		
-		if (a.x >= 10 && a.x <= 40 && a.y >= 320 && a.y <= 350) // si l'utilisateur clique sur l'image
+		if (a.x >= 10 && a.x <= 40 && a.y >= 315 && a.y <= 345)
+		{
+			reinit();
+			cercle_vide(prochaine_couleur);
+			actualiser();
+		}
+		
+		if (a.x >= 10 && a.x <= 40 && a.y >= 370 && a.y <= 400) // si l'utilisateur clique sur l'image
 		{
 			reinit();
 			charger_image();
 			actualiser();
 		}
 		
-		if (a.x >= 10 && a.x <= 40 && a.y >= 370 && a.y <= 400) // si l'utilisateur clique sur la gomme
+		if (a.x >= 10 && a.x <= 40 && a.y >= 420 && a.y <= 450) // si l'utilisateur clique sur la gomme
 		{		
 			reinit();
-			gomme();
+			gomme(prochaine_couleur);
 			actualiser();
 		}
 		
-		if (a.x >= 10 && a.x <= 60 && a.y >= 430 && a.y <= 490) // si l'utilisateur clique sur le stylo
+		if (a.x >= 10 && a.x <= 60 && a.y >= 480 && a.y <= 540) // si l'utilisateur clique sur le stylo
 		{
 				reinit();
 				main_levee(prochaine_couleur);
 				actualiser();
 		}
 		
+		if (a.x >= 60 && a.x <= 80 && a.y >= 35 && a.y <= 60) // si l'utilisateur clique sur le polygone
+		{
+			reinit();
+			polygone(prochaine_couleur);
+			actualiser();
+		}
+				
 		if (a.x >= H - 30 && a.x <= H-10 && a.y >= 5 && a.y <= 25) // si l'utilisateur clique sur le bouton rouge
 		{
 			break;
@@ -169,15 +184,19 @@ void init() // initialise la fenêtre et la barre du menu
 	//cercle plein
 	Point centre = {25, 280};
 	dessiner_disque(centre, 15, blanc);
+	
+	//cercle vide
+	Point cercle_vide = {25,330};
+	dessiner_cercle(cercle_vide, 15,blanc);
 	 
 	//image
-	Point image1 = {10,320};
-	Point image2 = { 14,324};
+	Point image1 = {10,370};
+	Point image2 = {14,374};
 	dessiner_rectangle(image1,30,30,blanc);
 	dessiner_rectangle(image2,22,22,bleu);
 	
 	//gomme
-	Point gomme = {10, 370};
+	Point gomme = {10, 420};
 	afficher_image("images/gomme.bmp",gomme);
 	
 	//bouton arrêt
@@ -192,14 +211,23 @@ void init() // initialise la fenêtre et la barre du menu
 	Point palette = {10,L-200};
 	afficher_image("images/palette.bmp", palette);
 	
-	
 	//main levée
-	Point stylo = {10, 430};
+	Point stylo = {10, 480};
 	afficher_image("images/stylo.bmp", stylo);
 	
 	//polygone
-	Point polygone = {10, 480};
-	afficher_image("images/polygone.bmp", polygone);
+	Point polygone1 = {70, 35};
+	Point polygone2 = {80, 45};
+	Point polygone3 = {60, 45};
+	Point polygone4 = {80, 50};
+	Point polygone5 = {60, 50};
+	Point polygone6 = {70, 60};
+	dessiner_ligne(polygone1, polygone2,blanc);
+	dessiner_ligne(polygone1, polygone3,blanc);
+	dessiner_ligne(polygone2, polygone4,blanc);
+	dessiner_ligne(polygone3, polygone5,blanc);
+	dessiner_ligne(polygone4, polygone6,blanc);
+	dessiner_ligne(polygone5, polygone6,blanc);
 }
 
 void reinit() //reinitialise les formes du menu pour les remettre à leur couleur d'origine
@@ -242,19 +270,23 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	//cercle plein
 	Point centre = {25, 280};
 	dessiner_disque(centre, 15, blanc);
+	
+	//cercle vide
+	Point cercle_vide = {25,330};
+	dessiner_cercle(cercle_vide, 15,blanc);
 	 
 	//image
-	Point image1 = {10,320};
-	Point image2 = { 14,324};
+	Point image1 = {10,370};
+	Point image2 = {14,374};
 	dessiner_rectangle(image1,30,30,blanc);
 	dessiner_rectangle(image2,22,22,bleu);
 	
 	//gomme
-	Point gomme = {10, 370};
+	Point gomme = {10, 420};
 	afficher_image("images/gomme.bmp",gomme);
 	
 	//bouton arrêt
-	Point arret = {H - 30, 5};
+	Point arret = {H-30,5};
 	afficher_image("images/button-red.bmp", arret);
 	
 	//bouton clear
@@ -265,10 +297,23 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	Point palette = {10,L-200};
 	afficher_image("images/palette.bmp", palette);
 	
-	
 	//main levée
-	Point stylo = {10, 430};
+	Point stylo = {10, 480};
 	afficher_image("images/stylo.bmp", stylo);
+	
+	//polygone
+	Point polygone1 = {70, 35};
+	Point polygone2 = {80, 45};
+	Point polygone3 = {60, 45};
+	Point polygone4 = {80, 50};
+	Point polygone5 = {60, 50};
+	Point polygone6 = {70, 60};
+	dessiner_ligne(polygone1, polygone2,blanc);
+	dessiner_ligne(polygone1, polygone3,blanc);
+	dessiner_ligne(polygone2, polygone4,blanc);
+	dessiner_ligne(polygone3, polygone5,blanc);
+	dessiner_ligne(polygone4, polygone6,blanc);
+	dessiner_ligne(polygone5, polygone6,blanc);
 	
 	actualiser();
 }
@@ -418,16 +463,22 @@ void cercle_plein(Couleur couleur)
 	Point centre = attendre_clic();
 	Point point = attendre_clic();
 	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
-	//if (point.x > MARGE + 5 && centre.x > MARGE + 5 && centre.x - rayon > MARGE) 
-	//{
-		dessiner_disque(centre, rayon, couleur);
-		reinit();
-	//}
-	//else 
-	//{
-		//reinit();
-		//return;
-	//}
+	dessiner_disque(centre, rayon, couleur);
+	reinit();
+}
+
+void cercle_vide(Couleur couleur)
+{
+	// colorie le cercle vide du menu avec la couleur choisie
+	Point cercle_vide = {25,330};
+	dessiner_cercle(cercle_vide, 15,couleur);
+	actualiser();
+	
+	Point centre = attendre_clic();
+	Point point = attendre_clic();
+	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
+	dessiner_cercle(centre, rayon, couleur);
+	reinit();
 }
 
 void texte()
@@ -473,14 +524,14 @@ void main_levee(Couleur couleur)
 	}	
 }
 
-void gomme()
+void gomme(Couleur couleur)
 {
 	// colorie le cadre de la gomme
-	Point trait1 = {10,370};
-	Point trait2 = {38,370};
+	Point trait1 = {10,420};
+	Point trait2 = {38,420};
 
-	Point trait3 = {10,408};
-	Point trait4 = {38,408};
+	Point trait3 = {10,458};
+	Point trait4 = {38,458};
 	dessiner_ligne(trait1,trait2,couleur);
 
 	dessiner_ligne(trait1,trait3,couleur);
@@ -504,8 +555,23 @@ void gomme()
 	reinit();
 }
 
-void polygone()
+void polygone(Couleur couleur)
 {
+	//colorie le polygone du menu en la couleur choisie
+	Point polygone1 = {70, 35};
+	Point polygone2 = {80, 45};
+	Point polygone3 = {60, 45};
+	Point polygone4 = {80, 50};
+	Point polygone5 = {60, 50};
+	Point polygone6 = {70, 60};
+	dessiner_ligne(polygone1, polygone2,couleur);
+	dessiner_ligne(polygone1, polygone3,couleur);
+	dessiner_ligne(polygone2, polygone4,couleur);
+	dessiner_ligne(polygone3, polygone5,couleur);
+	dessiner_ligne(polygone4, polygone6,couleur);
+	dessiner_ligne(polygone5, polygone6,couleur);
+	actualiser();
+	
 	Point a = attendre_clic();
 	Point b;
 	Point c = a;
@@ -516,7 +582,7 @@ void polygone()
 			b = attendre_clic_gauche_droite();
 			if (b.x > 0)
 			{
-				dessiner_ligne(a,b,blanc);
+				dessiner_ligne(a,b,couleur);
 				actualiser();
 				a = b;
 			}
@@ -527,7 +593,7 @@ void polygone()
 			}
 	}
 	reinitialiser_evenements();
-	dessiner_ligne(a,c,blanc);
+	dessiner_ligne(a,c,couleur);
 	reinit();
 }
 
