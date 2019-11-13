@@ -24,12 +24,15 @@ void cercle_plein(Couleur couleur);
 void cercle_vide(Couleur couleur);
 int power(int a);
 void texte();
+int epaisseur(Point a);
 void main_levee(Couleur couleur);
 void gomme(Couleur couleur);
 void polygone(Couleur couleur);
 void reinit();
 void clear();
 void animation();
+void cube(Point coin, Point coin_4, Couleur couleur);
+void remplissage(Point a, Couleur couleur);
 Couleur couleur(Point a);
 
 int main(void)
@@ -39,7 +42,7 @@ int main(void)
 	Couleur prochaine_couleur = rouge;
 	Point a;
 	while (1)
-	{	
+	{			
 		/*while (1)
 		{
 			a = attendre_clic();
@@ -58,6 +61,8 @@ int main(void)
 		{
 			reinit();
 			triangle(prochaine_couleur);
+			Point b = attendre_clic();
+			remplissage(b, prochaine_couleur);
 			actualiser();
 		}
 		
@@ -82,7 +87,7 @@ int main(void)
 			actualiser();
 		}
 		
-		if (a.x >= 10 && a.x <= 40 && a.y >= 315 && a.y <= 345)
+		if (a.x >= 10 && a.x <= 40 && a.y >= 315 && a.y <= 345) // si l'utilisateur clique sur le cercle vide
 		{
 			reinit();
 			cercle_vide(prochaine_couleur);
@@ -133,6 +138,8 @@ int main(void)
 			clear();
 			actualiser();
 		}
+		
+		
 	}
 	fermer_fenetre();
     return 0;
@@ -228,6 +235,9 @@ void init() // initialise la fenêtre et la barre du menu
 	dessiner_ligne(polygone3, polygone5,blanc);
 	dessiner_ligne(polygone4, polygone6,blanc);
 	dessiner_ligne(polygone5, polygone6,blanc);
+	
+	//cube
+	Point cube = {60, 100};
 }
 
 void reinit() //reinitialise les formes du menu pour les remettre à leur couleur d'origine
@@ -487,13 +497,13 @@ void texte()
 	char str[100];
 	char phrase[100];
 	printf("Que voulez vous afficher ?\n");
-	scanf("%[/n]s", str);
-	sscanf(str, "%s",phrase);
+	scanf("%s", str);
+	strcpy(phrase, str);
 	printf("De quelle taille est votre texte ?\n");
 	scanf("%d", &taille);
 	printf("Veuillez cliquer svp");
 	Point coin = attendre_clic();
-	afficher_texte(phrase, taille, coin, blanc);
+	afficher_texte(phrase, 12, coin, blanc);
 }
 
 void main_levee(Couleur couleur)
@@ -539,7 +549,7 @@ void gomme(Couleur couleur)
 	dessiner_ligne(trait3,trait4,couleur);
 	actualiser();
 	
-	Point b;
+	Point b = attendre_clic();
 	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
 	{
 		reinitialiser_evenements();
@@ -670,4 +680,53 @@ void animation()
 		actualiser();
 		compteur += 1;
 	}
+}
+
+
+void cube(Point coin, Point coin_4, Couleur couleur)
+{
+		int cote = (sqrt(power(coin.x - coin_4.x) + power(coin.y - coin_4.y))) / sqrt(2);
+		Point coin_2 = {coin.x + cote, coin.y};
+		Point coin_3 = {coin.x, coin.y + cote};
+		
+		dessiner_ligne(coin, coin_2, couleur);
+		dessiner_ligne(coin, coin_3, couleur);
+		dessiner_ligne(coin_2, coin_4, couleur);
+		dessiner_ligne(coin_3, coin_4, couleur);
+		
+		Point cube_1 = {coin.x + (cote/2), coin.y - (cote/2)};
+		Point cube_2 = {coin_2.x + (cote/2), coin_2.y - (cote/2)};
+		Point cube_3 = {coin_4.x + (cote/2), coin_4.y - (cote/2)};
+		dessiner_ligne(coin,cube_1,couleur);
+		dessiner_ligne(coin_2, cube_2, couleur);
+		dessiner_ligne(cube_1,cube_2,couleur);
+		dessiner_ligne(coin_4, cube_3,couleur);
+		dessiner_ligne(cube_2,cube_3,couleur); 
+}
+
+void remplissage(Point a, Couleur couleur)
+{
+	if (couleur_point(a) == darkgray)
+	{
+		changer_pixel(a,couleur);
+		Point b = {a.x + 1, a.y};
+		Point c = {a.x - 1, a.y};
+		Point d = {a.x, a.y + 1};
+		Point e = {a.x, a.y - 1};
+		remplissage(b, couleur);
+		remplissage(c, couleur);
+		remplissage(d, couleur);
+		remplissage(e, couleur);
+	}
+	else 
+	{
+		return;
+	}
+}
+
+int epaisseur(Point a)
+{
+	if (a.x >= 0 && a.x <= 50) return 1;
+	if (a.x >= 70 && a.x <= 120) return 2;
+	if (a.x >= 140 && a.x <= 190) return 3;
 }

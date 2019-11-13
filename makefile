@@ -22,7 +22,7 @@ lib/libgraphique.o: lib/libgraphique.c
 	@gcc   -c lib/libgraphique.c -o lib/libgraphique.o 
 
 source.o: $(SOURCE)
-	@gcc $(OPT) -c $(SOURCE)  -o source.o
+	@gcc $(OPT) -c -lm $(SOURCE)  -o source.o
 
 
 
