@@ -23,7 +23,7 @@ void charger_image(Couleur couleur);
 void cercle_plein(Couleur couleur);
 void cercle_vide(Couleur couleur);
 int power(int a);
-void texte();
+void texte(Couleur couleur);
 int epaisseur(Point a);
 void main_levee(Couleur couleur);
 void gomme(Couleur couleur);
@@ -41,6 +41,7 @@ int main(void)
 	actualiser();
 	Couleur prochaine_couleur = rouge;
 	Point a;
+	texte(prochaine_couleur);
 	while (1)
 	{			
 		/*while (1)
@@ -128,11 +129,17 @@ int main(void)
 				actualiser();
 		}
 		
-		if (a.x >= 120 && a.x <= 145 && a.y >= 155 && a.y <= 170) // si l'utilisateur clique sur remplissage
+		if (a.x >= 120 && a.x <= 230 && a.y >= 155 && a.y <= 170) // si l'utilisateur clique sur remplissage
 		{
 			reinit();
+			//colorie le texte quand selectionné
+			Point remplissag = {120, 155};
+			afficher_texte("REMPLISSAGE", 15, remplissag, couleur);
+			actualiser();
+			
 			a = attendre_clic();
 			remplissage(a, prochaine_couleur);
+			reinit();
 			actualiser();
 		}
 				
@@ -175,10 +182,7 @@ void init() // initialise la fenêtre et la barre du menu
 	Point palette_rectangle = {0,L-200};
 	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
 	cases();
-	Point aide_rectangle = {MARGE,L-200};
-	Point a_cote_de_celui_la = {H, L-200};
-    dessiner_rectangle(aide_rectangle,H-MARGE,200,blanc);
-    dessiner_ligne(aide_rectangle, a_cote_de_celui_la, noir);
+	aide();
 	
 	//rectangle
 	Point rectangle_1 = {10, 20};
@@ -248,6 +252,10 @@ void init() // initialise la fenêtre et la barre du menu
 	//remplissage
 	Point remplissage = {120, 155};
 	afficher_texte("REMPLISSAGE", 15, remplissage, noir);
+	
+	//texte
+	Point texte = {120, 200};
+	afficher_texte("TEXTE", 15, texte, noir);
 	
 	//bouton arrêt
 	Point arret = {H - 30, 5};
@@ -281,10 +289,6 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	Point palette_rectangle = {0,L-200};
 	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
 	cases();
-	Point aide_rectangle = {MARGE,L-200};
-	Point a_cote_de_celui_la = {H, L-200};
-    dessiner_rectangle(aide_rectangle,H-MARGE,200,blanc);
-    dessiner_ligne(aide_rectangle, a_cote_de_celui_la, noir);
 	
 	//rectangle
 	Point rectangle_1 = {10, 20};
@@ -354,6 +358,10 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	//remplissage
 	Point remplissage = {120, 155};
 	afficher_texte("REMPLISSAGE", 15, remplissage, noir);
+	
+	//texte
+	Point texte = {120, 200};
+	afficher_texte("TEXTE", 15, texte, noir);
 		
 	//bouton arrêt
 	Point arret = {H - 30, 5};
@@ -533,21 +541,6 @@ void cercle_vide(Couleur couleur)
 	reinit();
 }
 
-void texte()
-{	
-	int taille;
-	char str[100];
-	char phrase[100];
-	printf("Que voulez vous afficher ?\n");
-	scanf("%s", str);
-	strcpy(phrase, str);
-	printf("De quelle taille est votre texte ?\n");
-	scanf("%d", &taille);
-	printf("Veuillez cliquer svp");
-	Point coin = attendre_clic();
-	afficher_texte(phrase, 12, coin, blanc);
-}
-
 void main_levee(Couleur couleur)
 {
 	//change la couleur du texte quand sélectionné
@@ -725,7 +718,7 @@ void animation()
 void cube(Couleur couleur)
 {
 		//colorie le cube quand sélectionné
-		Point cube = {25, 450};
+		Point cube = {25, 440};
 		dessiner_rectangle(cube, 40, 40, couleur);
 		actualiser();
 		
@@ -749,15 +742,12 @@ void cube(Couleur couleur)
 		dessiner_ligne(cube_1,cube_2,couleur);
 		dessiner_ligne(coin_4, cube_3,couleur);
 		dessiner_ligne(cube_2,cube_3,couleur); 
+		
+		reinit();
 }
 
 void remplissage(Point a, Couleur couleur)
-{
-	//colorie le texte quand selectionné
-	Point remplissag = {120, 155};
-	afficher_texte("REMPLISSAGE", 15, remplissag, couleur);
-	actualiser();
-	
+{	
 	if (couleur_point(a) == darkgray)
 	{
 		changer_pixel(a,couleur);
@@ -785,24 +775,55 @@ int epaisseur(Point a)
 
 void cases()
 {
-	Point inter1 = {0,70};
+    Point inter1 = {0,70};
     Point inter2 = {100,70};
     Point inter3 = {100,0};
-    Point inter4 = {100,L-310};
+    Point inter4 = {100,L-400};
     int i;
     int j;
-    for ( i = 0; i <= 8;i++)
+    for ( i = 0; i <= 7;i++)
     {
         for ( j = 0; j <= 3 ; j++)
         {
-            dessiner_ligne(inter1,inter2,darkgray);
+            dessiner_ligne(inter1,inter2,noir);
+            inter1.y += 1;
+            inter2.y += 1;
         }
-        inter1.y += 60;
-        inter2.y += 60;
+
+        inter1.y += 57;
+        inter2.y += 57;
 
     }
-    for ( j = 0; j <= 3 ; j++)
+    for ( j = 0; j <= 2 ; j++)
     {
-        dessiner_ligne(inter3,inter4,darkgray);
+        dessiner_ligne(inter3,inter4,noir);
+        inter3.x += 1;
+        inter4.x += 1;
     }
+}
+
+void texte(Couleur couleur)
+{
+		//colorie le texte quand sélectionné
+		Point texte = {120,200};
+		afficher_texte("TEXTE", 15, texte, couleur);
+		char str[100];
+		int taille;
+		Point coin;
+		printf("Que voulez-vous écrire ?\n");
+		scanf("%s", str);
+		printf("De quel taille ?\n");
+		scanf("%d", &taille);
+		printf("Cliquez sur l'endroit où vous voulez votre texte\n");
+		coin = attendre_clic();
+		afficher_texte(str, taille, coin, couleur);
+		actualiser();	
+}
+
+void aide()
+{
+	Point aide_rectangle = {MARGE,L-200};
+	Point a_cote_de_celui_la = {H, L-200};
+    dessiner_rectangle(aide_rectangle,H-MARGE,200,blanc);
+    dessiner_ligne(aide_rectangle, a_cote_de_celui_la, noir);
 }
