@@ -34,6 +34,7 @@ void animation();
 void cube(Couleur couleur);
 void remplissage(Point a, Couleur couleur);
 Couleur couleur(Point a);
+void texte_aide(int i);
 
 int main(void)
 {
@@ -41,7 +42,6 @@ int main(void)
 	actualiser();
 	Couleur prochaine_couleur = rouge;
 	Point a;
-	texte(prochaine_couleur);
 	while (1)
 	{			
 		/*while (1)
@@ -55,6 +55,7 @@ int main(void)
 		if (a.x <= 80 && a.x >= 10 && a.y <= 60 && a.y >= 20) // si l'utilisateur clique sur le rectangle
 		{
 			reinit();
+			texte_aide(1);
 			rectangle_vide(prochaine_couleur);
 			actualiser();
 		}
@@ -62,6 +63,7 @@ int main(void)
 		if (a.x >= 10 && a.x <= 80 && a.y <= 120 && a.y >= 80) // si l'utilisateur clique sur le triangle
 		{
 			reinit();
+			texte_aide(2);
 			triangle(prochaine_couleur);
 			actualiser();
 		}
@@ -69,6 +71,7 @@ int main(void)
 		if (a.x >= 10 && a.x <= 80 && a.y >= 140 && a.y <= 180) // si l'utilisateur clique sur le segment
 		{
 			reinit();
+			texte_aide(3);
 			segment(prochaine_couleur);
 			actualiser();
 		}
@@ -76,6 +79,7 @@ int main(void)
 		if (a.x >= 10 && a.x <= 80 && a.y>= 200 && a.y <= 240) // si l'utilisateur clique sur le rectangle plein
 		{
 			reinit();
+			texte_aide(4);
 			rectangle_plein(prochaine_couleur);
 			actualiser();
 		}
@@ -83,6 +87,7 @@ int main(void)
 		if (a.x >= 10 && a.x <= 80 && a.y >= 260 && a.y <= 300) // si l'utilisateur clique sur le cercle plein
 		{
 			reinit();
+			texte_aide(5);
 			cercle_plein(prochaine_couleur);
 			actualiser();
 		}
@@ -90,6 +95,7 @@ int main(void)
 		if (a.x >= 10 && a.x <= 80 && a.y >= 320 && a.y <= 360) // si l'utilisateur clique sur le cercle vide
 		{
 			reinit();
+			texte_aide(6);
 			cercle_vide(prochaine_couleur);
 			actualiser();
 		}
@@ -97,6 +103,7 @@ int main(void)
 		if (a.x >= 10 && a.x <= 80 && a.y >= 380 && a.y <= 430) // si l'utilisateur clique sur le polygone
 		{
 			reinit();
+			texte_aide(7);
 			polygone(prochaine_couleur);
 			actualiser();
 		}
@@ -104,6 +111,7 @@ int main(void)
 		if (a.x >= 10 && a.x <= 80 && a.y >= 450 && a.y <= 490) // si l'utilisateur clique sur le polygone
 		{
 			reinit();
+			texte_aide(8);
 			cube(prochaine_couleur);
 			actualiser();
 		}
@@ -111,6 +119,7 @@ int main(void)
 		if (a.x >= 120 && a.x <= 230 && a.y >= 20 && a.y <= 35) // si l'utilisateur clique sur l'image
 		{
 			reinit();
+			texte_aide(9);
 			charger_image(prochaine_couleur);
 			actualiser();
 		}
@@ -118,6 +127,7 @@ int main(void)
 		if (a.x >= 120 && a.x <= 230 && a.y >= 65 && a.y <= 75) // si l'utilisateur clique sur la gomme
 		{		
 			reinit();
+			texte_aide(10);
 			gomme(prochaine_couleur);
 			actualiser();
 		}
@@ -125,6 +135,7 @@ int main(void)
 		if (a.x >= 120 && a.x <= 230 && a.y >= 110 && a.y <= 125) // si l'utilisateur clique sur le stylo
 		{
 				reinit();
+				texte_aide(11);
 				main_levee(prochaine_couleur);
 				actualiser();
 		}
@@ -132,6 +143,7 @@ int main(void)
 		if (a.x >= 120 && a.x <= 230 && a.y >= 155 && a.y <= 170) // si l'utilisateur clique sur remplissage
 		{
 			reinit();
+			texte_aide(12);
 			//colorie le texte quand selectionné
 			Point remplissag = {120, 155};
 			afficher_texte("REMPLISSAGE", 15, remplissag, couleur);
@@ -160,6 +172,13 @@ int main(void)
 			actualiser();
 		}
 		
+		if (a.x >= 120 && a.x <= 320 && a.y >= 200 && a.y <= 215)
+		{
+			texte_aide(13);
+			texte(prochaine_couleur);
+			actualiser();
+		}
+		
 		
 	}
 	fermer_fenetre();
@@ -183,6 +202,7 @@ void init() // initialise la fenêtre et la barre du menu
 	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
 	cases();
 	aide();
+	texte_aide(0);
 	
 	//rectangle
 	Point rectangle_1 = {10, 20};
@@ -289,6 +309,7 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	Point palette_rectangle = {0,L-200};
 	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
 	cases();
+	texte_aide(0);
 	
 	//rectangle
 	Point rectangle_1 = {10, 20};
@@ -552,8 +573,6 @@ void main_levee(Couleur couleur)
 	Point b;
 	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
 	{
-		while (touche_a_ete_pressee(SDL_BUTTON_RIGHT) == 0)
-		{
 			reinitialiser_evenements();
 			traiter_evenements();
 			b = deplacement_souris_a_eu_lieu();
@@ -569,8 +588,6 @@ void main_levee(Couleur couleur)
 				reinit();
 				return;
 			}
-		}
-		a = attendre_clic();
 	}	
 }
 
@@ -781,9 +798,9 @@ void cases()
     Point inter4 = {100,L-400};
     int i;
     int j;
-    for ( i = 0; i <= 7;i++)
+    for (i = 0; i <= 7;i++)
     {
-        for ( j = 0; j <= 3 ; j++)
+        for (j = 0; j <= 3 ; j++)
         {
             dessiner_ligne(inter1,inter2,noir);
             inter1.y += 1;
@@ -794,7 +811,7 @@ void cases()
         inter2.y += 57;
 
     }
-    for ( j = 0; j <= 2 ; j++)
+    for (j = 0; j <= 2 ; j++)
     {
         dessiner_ligne(inter3,inter4,noir);
         inter3.x += 1;
@@ -826,4 +843,61 @@ void aide()
 	Point a_cote_de_celui_la = {H, L-200};
     dessiner_rectangle(aide_rectangle,H-MARGE,200,blanc);
     dessiner_ligne(aide_rectangle, a_cote_de_celui_la, noir);
+}
+
+void texte_aide(int i)
+{
+		aide();
+		actualiser();
+		Point texte = {MARGE + 100, L- 100};
+		char *str;
+		switch(i)
+		{
+			case 0:
+				str = "Cliquez ou non sur une couleur puis choisissez une forme";
+				break;
+			case 1:
+				str = "Cliquez pour choisir le point haut gauche et le point bas droite";
+				break;
+			case 2:
+				str = "Cliquez pour choisir les trois points du triangle";
+				break;
+			case 3:
+				str = "Cliquez sur deux points pour dessiner un segment";
+				break;
+			case 4:
+				str = "Cliquez pour choisir le point haut gauche et le point bas droite";
+				break;
+			case 5:
+				str = "Cliquez pour choisir le centre puis pour choisir un point du cercle";
+				break;
+			case 6:
+				str = "Cliquez pour choisir le centre puis pour choisir un point du cercle";
+				break;
+			case 7:
+				str = "Cliquez pour choisir les points du polygone puis faites un clic droit pour terminer";
+				break;
+			case 8:
+				str = "Cliquez sur deux points pour former un cube";
+				break;
+			case 9:
+				str = "Cliquez pour afficher l'image";
+				break;
+			case 10:
+				str = "Cliquez pour commencer a gommer puis cliquer sur espace quand vous avez terminer";
+				break;
+			case 11:
+				str = "Cliquez pour choisir le point de commencement puis appuyez sur espace pour arreter";
+				break;	
+			case 12:
+				str = "Cliquez pour choisir le point de début du remplissage";
+				break;
+			case 13:
+				str = "Allez dans le terminal pour continuer l'aventure :)";
+				break;
+			default:
+				break;
+		}
+		afficher_texte(str, 30, texte, noir);
+		actualiser();
 }
