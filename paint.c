@@ -35,6 +35,8 @@ void cube(Couleur couleur);
 void remplissage(Point a, Couleur couleur);
 Couleur couleur(Point a);
 void texte_aide(int i);
+void cases();
+void aide();
 
 int main(void)
 {
@@ -146,7 +148,7 @@ int main(void)
 			texte_aide(12);
 			//colorie le texte quand selectionné
 			Point remplissag = {120, 155};
-			afficher_texte("REMPLISSAGE", 15, remplissag, couleur);
+			afficher_texte("REMPLISSAGE", 15, remplissag, prochaine_couleur);
 			actualiser();
 			
 			a = attendre_clic();
@@ -240,12 +242,12 @@ void init() // initialise la fenêtre et la barre du menu
 	dessiner_cercle(cercle_vide, 20,noir);
 	
 	//polygone
-	Point polygone1 = {45, 375};
-	Point polygone2 = {10, 395};
-	Point polygone3 = {80, 395};
-	Point polygone4 = {10, 405};
-	Point polygone5 = {80, 405};
-	Point polygone6 = {45, 425};
+	Point polygone1 = {45, 382};
+	Point polygone2 = {10, 402};
+	Point polygone3 = {80, 402};
+	Point polygone4 = {10, 412};
+	Point polygone5 = {80, 412};
+	Point polygone6 = {45, 432};
 	dessiner_ligne(polygone1, polygone2,noir);
 	dessiner_ligne(polygone1, polygone3,noir);
 	dessiner_ligne(polygone2, polygone4,noir);
@@ -254,7 +256,7 @@ void init() // initialise la fenêtre et la barre du menu
 	dessiner_ligne(polygone5, polygone6,noir);
 	
 	//cube
-	Point cube = {25, 440};
+	Point cube = {25, 447};
 	dessiner_rectangle(cube,40,40,noir);
 	 
 	//image
@@ -290,7 +292,6 @@ void init() // initialise la fenêtre et la barre du menu
 	afficher_image("images/palette.bmp", palette);
 	
 	//epaisseur
-	int i;
 	Point epaisseur1 = {40, L-240};
 	Point epaisseur2 = {80, L-240};
 	Point epaisseur3 = {140, L-240};
@@ -347,12 +348,12 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	dessiner_cercle(cercle_vide, 20,noir);
 	
 	//polygone
-	Point polygone1 = {45, 375};
-	Point polygone2 = {10, 395};
-	Point polygone3 = {80, 395};
-	Point polygone4 = {10, 405};
-	Point polygone5 = {80, 405};
-	Point polygone6 = {45, 425};
+	Point polygone1 = {45, 382};
+	Point polygone2 = {10, 402};
+	Point polygone3 = {80, 402};
+	Point polygone4 = {10, 412};
+	Point polygone5 = {80, 412};
+	Point polygone6 = {45, 432};
 	dessiner_ligne(polygone1, polygone2,noir);
 	dessiner_ligne(polygone1, polygone3,noir);
 	dessiner_ligne(polygone2, polygone4,noir);
@@ -361,7 +362,7 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	dessiner_ligne(polygone5, polygone6,noir);
 	
 	//cube
-	Point cube = {25, 440};
+	Point cube = {25, 447};
 	dessiner_rectangle(cube,40,40,noir);
 	 
 	//image
@@ -397,7 +398,6 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	afficher_image("images/palette.bmp", palette);
 	
 	//epaisseur
-	int i;
 	Point epaisseur1 = {40, L-240};
 	Point epaisseur2 = {80, L-240};
 	Point epaisseur3 = {140, L-240};
@@ -788,6 +788,7 @@ int epaisseur(Point a)
 	if (a.x >= 0 && a.x <= 50) return 1;
 	if (a.x >= 70 && a.x <= 120) return 2;
 	if (a.x >= 140 && a.x <= 190) return 3;
+	return 4;
 }
 
 void cases()
@@ -834,6 +835,7 @@ void texte(Couleur couleur)
 		printf("Cliquez sur l'endroit où vous voulez votre texte\n");
 		coin = attendre_clic();
 		afficher_texte(str, taille, coin, couleur);
+		reinit();
 		actualiser();	
 }
 
@@ -890,7 +892,7 @@ void texte_aide(int i)
 				str = "Cliquez pour choisir le point de commencement puis appuyez sur espace pour arreter";
 				break;	
 			case 12:
-				str = "Cliquez pour choisir le point de début du remplissage";
+				str = "Cliquez pour choisir le point de debut du remplissage";
 				break;
 			case 13:
 				str = "Allez dans le terminal pour continuer l'aventure :)";
