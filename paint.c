@@ -282,7 +282,9 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
 	cases();
 	Point aide_rectangle = {MARGE,L-200};
+	Point a_cote_de_celui_la = {H, L-200};
     dessiner_rectangle(aide_rectangle,H-MARGE,200,blanc);
+    dessiner_ligne(aide_rectangle, a_cote_de_celui_la, noir);
 	
 	//rectangle
 	Point rectangle_1 = {10, 20};
@@ -491,7 +493,7 @@ void charger_image(Couleur couleur)
 {
 	//colorie le texte quand sélectionné
 	Point image = {120, 20};
-	afficher_texte("IMAGE", 25, image, couleur);
+	afficher_texte("IMAGE", 15, image, couleur);
 	actualiser();	
 	
 	Point coin_image = attendre_clic();
@@ -550,7 +552,7 @@ void main_levee(Couleur couleur)
 {
 	//change la couleur du texte quand sélectionné
 	Point stylo = {120,110};
-	afficher_texte("STYLO", 25, stylo, couleur);
+	afficher_texte("STYLO", 15, stylo, couleur);
 	actualiser();
 	
 	Point a = attendre_clic();
@@ -583,7 +585,7 @@ void gomme(Couleur couleur)
 {
 	//colorie le texte quand sélectionné
 	Point gomme = {120, 65};
-	afficher_texte("GOMME", 25, gomme, couleur);
+	afficher_texte("GOMME", 15, gomme, couleur);
 	actualiser();
 	
 	Point b = attendre_clic();
@@ -751,6 +753,11 @@ void cube(Couleur couleur)
 
 void remplissage(Point a, Couleur couleur)
 {
+	//colorie le texte quand selectionné
+	Point remplissag = {120, 155};
+	afficher_texte("REMPLISSAGE", 15, remplissag, couleur);
+	actualiser();
+	
 	if (couleur_point(a) == darkgray)
 	{
 		changer_pixel(a,couleur);
