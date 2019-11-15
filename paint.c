@@ -175,6 +175,10 @@ void init() // initialise la fenêtre et la barre du menu
 	Point palette_rectangle = {0,L-200};
 	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
 	cases();
+	Point aide_rectangle = {MARGE,L-200};
+	Point a_cote_de_celui_la = {H, L-200};
+    dessiner_rectangle(aide_rectangle,H-MARGE,200,blanc);
+    dessiner_ligne(aide_rectangle, a_cote_de_celui_la, noir);
 	
 	//rectangle
 	Point rectangle_1 = {10, 20};
@@ -276,6 +280,9 @@ void reinit() //reinitialise les formes du menu pour les remettre à leur couleu
 	dessiner_ligne(p,q,blanc);
 	Point palette_rectangle = {0,L-200};
 	dessiner_rectangle(palette_rectangle,MARGE,200,noir);
+	cases();
+	Point aide_rectangle = {MARGE,L-200};
+    dessiner_rectangle(aide_rectangle,H-MARGE,200,blanc);
 	
 	//rectangle
 	Point rectangle_1 = {10, 20};
