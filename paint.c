@@ -42,7 +42,7 @@ int main(void)
 {
 	init();
 	actualiser();
-	Couleur prochaine_couleur = blanc;
+	Couleur prochaine_couleur = noir;
 	int prochaine_epaisseur = 1;
 	Point a;
 	while (1)
@@ -557,8 +557,12 @@ void charger_image(Couleur couleur)
 	afficher_texte("IMAGE", 15, image, couleur);
 	actualiser();	
 	
+	char str[100];
+	printf("Donnez moi le chemin vers votre image (en .bmp)\n");
+	scanf("%[^\n]s", str);
+	printf("Cliquez sur l'endroit ou vous voulez l'image\n");
 	Point coin_image = attendre_clic();
-	afficher_image("images/uhahah.bpm",coin_image);
+	afficher_image(str,coin_image);
 }
 
 int power(int a)
@@ -587,11 +591,11 @@ void cercle_vide(Couleur couleur, int epaisseur)
 	dessiner_cercle(cercle_vide, 20,couleur);
 	actualiser();
 	
-	Point centre = attendre_clic();
-	Point point = attendre_clic();
-	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
+	Point centre = attendre_clic(); //centre du cercle
+	Point point = attendre_clic();	//point du cercle
+	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y)); //calcule le rayon du cercle
 	int i;
-	for (i = 0; i < epaisseur; i++)
+	for (i = 0; i < epaisseur; i++) //epaisseur du cercle
 	{
 		dessiner_cercle(centre, rayon, couleur);
 		rayon += 1;
@@ -654,12 +658,12 @@ void gomme(Couleur couleur, int epaisseur)
 void polygone(Couleur couleur, int epaisseur)
 {
 	//colorie le polygone du menu en la couleur choisie
-	Point polygone1 = {45, 380};
-	Point polygone2 = {10, 400};
-	Point polygone3 = {80, 400};
-	Point polygone4 = {10, 410};
-	Point polygone5 = {80, 410};
-	Point polygone6 = {45, 430};
+	Point polygone1 = {45, 382};
+	Point polygone2 = {10, 402};
+	Point polygone3 = {80, 402};
+	Point polygone4 = {10, 412};
+	Point polygone5 = {80, 412};
+	Point polygone6 = {45, 432};
 	dessiner_ligne(polygone1, polygone2,couleur);
 	dessiner_ligne(polygone1, polygone3,couleur);
 	dessiner_ligne(polygone2, polygone4,couleur);
@@ -878,7 +882,7 @@ void texte(Couleur couleur)
 		int taille;
 		Point coin;
 		printf("Que voulez-vous écrire ?\n");
-		scanf("%s", str);
+		scanf("%[^\n]s", str);
 		printf("De quel taille ?\n");
 		scanf("%d", &taille);
 		printf("Cliquez sur l'endroit où vous voulez votre texte\n");
@@ -900,12 +904,12 @@ void texte_aide(int i)
 {
 		aide();
 		actualiser();
-		Point texte = {MARGE + 100, L- 100};
+		Point texte = {MARGE + 100, L- 120};
 		char *str;
 		switch(i)
 		{
 			case 0:
-				str = "Cliquez ou non sur une couleur puis choisissez une forme";
+				str = "Cliquez ou non sur une couleur, vous pouvez aussi choisir l'epaisseur, puis choisissez une forme";
 				break;
 			case 1:
 				str = "Cliquez pour choisir le point haut gauche et le point bas droite";
@@ -932,7 +936,7 @@ void texte_aide(int i)
 				str = "Cliquez sur deux points pour former un cube";
 				break;
 			case 9:
-				str = "Cliquez pour afficher l'image";
+				str = "Allez dans le terminal pour afficher votre image";
 				break;
 			case 10:
 				str = "Cliquez pour commencer a gommer puis cliquer sur espace quand vous avez terminer";
