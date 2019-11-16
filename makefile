@@ -1,6 +1,6 @@
 #changer le nom des deux lignes suivantes si nécessaire
-SOURCE = paint.c
-OUTPUT = programme
+SOURCE = code_paint.c
+OUTPUT = paint
 LIB = -lm -lSDL -lSDL_ttf
 OPT = -Wall
 
