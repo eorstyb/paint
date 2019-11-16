@@ -25,5 +25,7 @@ La fonction cube peut avoir quelques défauts si l'utilisateur place mal ses poi
 
 
 
-On vous souhaite une bonne journée, j'espère que notre paint vous plaira,
+On vous souhaite une bonne journée, j'espère que notre paint vous plaira.
+
+(Logo Paint designé par Aditya)
 

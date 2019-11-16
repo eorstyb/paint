@@ -634,7 +634,7 @@ void gomme(Couleur couleur, int epaisseur)
 	actualiser();
 	
 	Point b = attendre_clic();
-	while (touche_a_ete_pressee(SDLK_SPACE) == 0)
+	while (touche_a_ete_pressee(SDLK_SPACE) == 0) // tant que l'utilisateur ne clique pas sur la touche espace
 	{
 		reinitialiser_evenements();
 		traiter_evenements();
@@ -673,7 +673,7 @@ void polygone(Couleur couleur, int epaisseur)
 	int i = 1;
 	int j;
 		
-	while (i == 1)
+	while (i == 1) // tant que l'utilisateur ne clique pas sur le clic droit
 	{	
 			b = attendre_clic_gauche_droite();
 			if (b.x > 0)
@@ -703,7 +703,7 @@ void polygone(Couleur couleur, int epaisseur)
 	reinit();
 }
 
-Couleur couleur(Point a)
+Couleur couleur(Point a) // renvoie la couleur choisie par l'utilisateur
 {
 	if (a.x >= 162 && a.x <= 194 && a.y >= L - 150 && a.y <= L - 125) {return blanc;}
     if (a.x >= 124 && a.x <= 156 && a.y >= 748 && a.y <= 769) {return noir;}
@@ -716,14 +716,14 @@ Couleur couleur(Point a)
 	return blanc;
 }
 
-void clear()
+void clear() // quand l'utilisateur clique sur le bouton bleu, l'espace de travail est effacé
 {
 		Point a = {MARGE+1, 0};
 		dessiner_rectangle(a, H - a.x, L, darkgray);
 		reinit();
 }
 
-void animation()
+void animation() // animation de l'écran de chargement
 {
 	Point coin = {(H/2) - 100, (L/2)};
 	int compteur = 0;
