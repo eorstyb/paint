@@ -16,22 +16,22 @@
 // prototypes des fonctions
 void init();
 void rectangle_plein(Couleur couleur);
-void triangle(Couleur couleur);
-void rectangle_vide(Couleur couleur);
-void segment(Couleur);
+void triangle(Couleur couleur, int epaisseur);
+void rectangle_vide(Couleur couleur, int epaisseur);
+void segment(Couleur, int epaisseur);
 void charger_image(Couleur couleur);
 void cercle_plein(Couleur couleur);
-void cercle_vide(Couleur couleur);
+void cercle_vide(Couleur couleur, int epaisseur);
 int power(int a);
 void texte(Couleur couleur);
 int epaisseur(Point a);
 void main_levee(Couleur couleur);
-void gomme(Couleur couleur);
-void polygone(Couleur couleur);
+void gomme(Couleur couleur, int epaisseur);
+void polygone(Couleur couleur, int epaisseur);
 void reinit();
 void clear();
 void animation();
-void cube(Couleur couleur);
+void cube(Couleur couleur, int epaisseur);
 void remplissage(Point a, Couleur couleur);
 Couleur couleur(Point a);
 void texte_aide(int i);
@@ -42,7 +42,8 @@ int main(void)
 {
 	init();
 	actualiser();
-	Couleur prochaine_couleur = rouge;
+	Couleur prochaine_couleur = blanc;
+	int prochaine_epaisseur = 1;
 	Point a;
 	while (1)
 	{			
@@ -58,7 +59,7 @@ int main(void)
 		{
 			reinit();
 			texte_aide(1);
-			rectangle_vide(prochaine_couleur);
+			rectangle_vide(prochaine_couleur, prochaine_epaisseur);
 			actualiser();
 		}
 	
@@ -66,7 +67,7 @@ int main(void)
 		{
 			reinit();
 			texte_aide(2);
-			triangle(prochaine_couleur);
+			triangle(prochaine_couleur, prochaine_epaisseur);
 			actualiser();
 		}
 		
@@ -74,7 +75,7 @@ int main(void)
 		{
 			reinit();
 			texte_aide(3);
-			segment(prochaine_couleur);
+			segment(prochaine_couleur, prochaine_epaisseur);
 			actualiser();
 		}
 		
@@ -98,7 +99,7 @@ int main(void)
 		{
 			reinit();
 			texte_aide(6);
-			cercle_vide(prochaine_couleur);
+			cercle_vide(prochaine_couleur, prochaine_epaisseur);
 			actualiser();
 		}
 		
@@ -106,7 +107,7 @@ int main(void)
 		{
 			reinit();
 			texte_aide(7);
-			polygone(prochaine_couleur);
+			polygone(prochaine_couleur, prochaine_epaisseur);
 			actualiser();
 		}
 		
@@ -114,7 +115,7 @@ int main(void)
 		{
 			reinit();
 			texte_aide(8);
-			cube(prochaine_couleur);
+			cube(prochaine_couleur, prochaine_epaisseur);
 			actualiser();
 		}
 		
@@ -130,7 +131,7 @@ int main(void)
 		{		
 			reinit();
 			texte_aide(10);
-			gomme(prochaine_couleur);
+			gomme(prochaine_couleur, prochaine_epaisseur);
 			actualiser();
 		}
 		
@@ -168,18 +169,29 @@ int main(void)
 			prochaine_couleur = couleur(a);
 		} 
 		
-		if (a.x >= H - 60 && a.x <= H-40 && a.y >= 10 && a.y <= 30)
+		if (a.x >= H - 60 && a.x <= H-40 && a.y >= 10 && a.y <= 30) // si l'utilisateur clique sur le bouton bleu
 		{
 			clear();
 			actualiser();
 		}
 		
-		if (a.x >= 120 && a.x <= 320 && a.y >= 200 && a.y <= 215)
+		if (a.x >= 120 && a.x <= 320 && a.y >= 200 && a.y <= 215) //si l'utilisateur clique sur "TEXTE"
 		{
 			texte_aide(13);
 			texte(prochaine_couleur);
 			actualiser();
 		}
+		
+		if (a.x <= 170 && a.x >= 30 && a.y >= L-270 && a.y <= L-210) //si l'utilisateur clique sur un des ronds des epaisseurs
+		{
+			prochaine_epaisseur = epaisseur(a);
+		}
+		Point epaisseur1 = {40, L-240};
+	Point epaisseur2 = {80, L-240};
+	Point epaisseur3 = {140, L-240};
+	dessiner_disque(epaisseur1, 10, noir);
+	dessiner_disque(epaisseur2, 15, noir);
+	dessiner_disque(epaisseur3, 30, noir);	
 		
 		
 	}
@@ -417,7 +429,9 @@ void rectangle_plein(Couleur couleur) // créé un rectangle à partir de deux p
 	
 	Point coin1 = attendre_clic();
 	Point coin2 = attendre_clic();
+	
 	if (coin1.x <=  coin2.x && coin1.y <= coin2.y)  dessiner_rectangle(coin1, coin2.x - coin1.x, coin2.y - coin1.y, couleur);
+	
 	
 	else if (coin1.x <= coin2.x && coin1.y >= coin2.y) 
 	{
@@ -449,7 +463,7 @@ void rectangle_plein(Couleur couleur) // créé un rectangle à partir de deux p
 	reinit();	
 }
 
-void rectangle_vide(Couleur couleur) 
+void rectangle_vide(Couleur couleur, int epaisseur) 
 {
 	//le rectangle du menu devient rouge
 	Point rectangle_1 = {10, 20};
@@ -457,7 +471,6 @@ void rectangle_vide(Couleur couleur)
 	Point rectangle_3 = {80, 20};
 	Point rectangle_4 = {80, 60};
 	dessiner_ligne(rectangle_1, rectangle_2, couleur);
-
 	dessiner_ligne(rectangle_2, rectangle_4, couleur);
 	dessiner_ligne(rectangle_3, rectangle_4, couleur);
 	dessiner_ligne(rectangle_3, rectangle_1, couleur);
@@ -468,18 +481,30 @@ void rectangle_vide(Couleur couleur)
 	Point coin3;
 	coin3.x = coin2.x;
 	coin3.y = coin1.y;
-		
 	Point coin4;
 	coin4.x = coin1.x;
 	coin4.y = coin2.y;
-	dessiner_ligne(coin1,coin3,couleur);
-	dessiner_ligne(coin3,coin2,couleur);
-	dessiner_ligne(coin2,coin4,couleur);
-	dessiner_ligne(coin4,coin1,couleur);
+	int i;
+	
+	for (i = 0; i < epaisseur; i++)
+	{
+		dessiner_ligne(coin1,coin3,couleur);
+		dessiner_ligne(coin3,coin2,couleur);
+		dessiner_ligne(coin2,coin4,couleur);
+		dessiner_ligne(coin4,coin1,couleur);
+		coin1.x -= 1;
+		coin1.y -= 1;
+		coin2.x += 1;
+		coin2.y += 1;
+		coin3.x += 1;
+		coin3.y -= 1;
+		coin4.x -= 1;
+		coin4.y += 1;
+	}
 	reinit();
 }
 
-void triangle(Couleur couleur)
+void triangle(Couleur couleur, int epaisseur)
 {
 	//colorie le triangle du menu en rouge
 	Point triangle_a = {45, 80};
@@ -492,6 +517,7 @@ void triangle(Couleur couleur)
 	
 	Point a = attendre_clic();
 	Point b = attendre_clic();
+	
 	dessiner_ligne(a,b,couleur);
 	actualiser();
 	Point c = attendre_clic();
@@ -504,7 +530,7 @@ void triangle(Couleur couleur)
 	reinit();
 }
 
-void segment(Couleur couleur)
+void segment(Couleur couleur, int epaisseur)
 {
 	//colorie le segment du menu en rouge
 	Point a = {10, 140};
@@ -514,7 +540,13 @@ void segment(Couleur couleur)
 
 	Point segment_1 = attendre_clic();
 	Point segment_2 = attendre_clic();
-	dessiner_ligne(segment_1,segment_2,couleur);
+	int i;
+	for (i = 0; i < epaisseur; i++)
+	{
+		dessiner_ligne(segment_1,segment_2,couleur);
+		segment_1.x -= 1;
+		segment_2.x -= 1;
+	}
 	reinit();
 }
 
@@ -548,7 +580,7 @@ void cercle_plein(Couleur couleur)
 	reinit();
 }
 
-void cercle_vide(Couleur couleur)
+void cercle_vide(Couleur couleur, int epaisseur)
 {
 	// colorie le cercle vide du menu avec la couleur choisie
 	Point cercle_vide = {45,340};
@@ -558,7 +590,12 @@ void cercle_vide(Couleur couleur)
 	Point centre = attendre_clic();
 	Point point = attendre_clic();
 	int rayon = sqrt(power(centre.x - point.x) + power(centre.y - point.y));
-	dessiner_cercle(centre, rayon, couleur);
+	int i;
+	for (i = 0; i < epaisseur; i++)
+	{
+		dessiner_cercle(centre, rayon, couleur);
+		rayon += 1;
+	}
 	reinit();
 }
 
@@ -591,7 +628,7 @@ void main_levee(Couleur couleur)
 	}	
 }
 
-void gomme(Couleur couleur)
+void gomme(Couleur couleur, int epaisseur)
 {
 	//colorie le texte quand sélectionné
 	Point gomme = {120, 65};
@@ -604,9 +641,9 @@ void gomme(Couleur couleur)
 		reinitialiser_evenements();
 		traiter_evenements();
 		b = deplacement_souris_a_eu_lieu();
-		if (b.x > MARGE + 20)
+		if (b.x > MARGE + epaisseur * 10 && b.y + epaisseur * 10 <= L-200)
 		{
-			dessiner_disque(b,20,darkgray);
+			dessiner_disque(b,epaisseur * 10,darkgray);
 			actualiser();
 		}
 	}	
@@ -614,7 +651,7 @@ void gomme(Couleur couleur)
 	reinit();
 }
 
-void polygone(Couleur couleur)
+void polygone(Couleur couleur, int epaisseur)
 {
 	//colorie le polygone du menu en la couleur choisie
 	Point polygone1 = {45, 380};
@@ -628,20 +665,27 @@ void polygone(Couleur couleur)
 	dessiner_ligne(polygone2, polygone4,couleur);
 	dessiner_ligne(polygone3, polygone5,couleur);
 	dessiner_ligne(polygone4, polygone6,couleur);
-	dessiner_ligne(polygone5, polygone6,couleur);
+	dessiner_ligne(polygone5, polygone6,couleur);		
 	actualiser();
+	
 	
 	Point a = attendre_clic();
 	Point b;
 	Point c = a;
 	int i = 1;
+	int j;
 		
 	while (i == 1)
 	{	
 			b = attendre_clic_gauche_droite();
 			if (b.x > 0)
 			{
-				dessiner_ligne(a,b,couleur);
+				for (j = 0; j < epaisseur; j++)
+				{
+					dessiner_ligne(a,b,couleur);
+					a.x -= 1;
+					b.x -= 1;
+				}
 				actualiser();
 				a = b;
 			}
@@ -652,7 +696,12 @@ void polygone(Couleur couleur)
 			}
 	}
 	reinitialiser_evenements();
-	dessiner_ligne(a,c,couleur);
+	for (j = 0; j < epaisseur; j++)
+	{
+		dessiner_ligne(a,c,couleur);
+		a.x -= 1;
+		c.x -= 1;
+	}
 	reinit();
 }
 
@@ -732,7 +781,7 @@ void animation()
 }
 
 
-void cube(Couleur couleur)
+void cube(Couleur couleur, int epaisseur)
 {
 		//colorie le cube quand sélectionné
 		Point cube = {25, 440};
@@ -784,11 +833,11 @@ void remplissage(Point a, Couleur couleur)
 }
 
 int epaisseur(Point a)
-{
-	if (a.x >= 0 && a.x <= 50) return 1;
-	if (a.x >= 70 && a.x <= 120) return 2;
-	if (a.x >= 140 && a.x <= 190) return 3;
-	return 4;
+{	
+	if (a.x >= 30 && a.x <= 50) return 1;
+	if (a.x >= 65 && a.x <= 95) return 3;
+	if (a.x >= 110 && a.x <= 170) return 6;
+	return 1;
 }
 
 void cases()
