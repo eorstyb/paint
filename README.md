@@ -15,7 +15,7 @@ Notez bien que lorsque vous choisissez une couleur ou une épaisseur, celle-ci e
 
 
 Bugs:
-Pour la palette, il se peut que les coordonnées ne soit pas parfaites, c'est-à-dire que pour certaines couleurs si l'utulisateur clique légèrement à côté la couleur ne sera pas prise en compte et devienne la couleur noire qui est la couleur par défaut.
+Pour la palette, il se peut que les coordonnées ne soit pas parfaites, c'est-à-dire que pour certaines couleurs si l'utilisateur clique légèrement à côté la couleur ne sera pas prise en compte et devienne la couleur noire qui est la couleur par défaut.
 
 De plus, le cercle vide possédant des trous n'est pas compatible avec le remplissage puisqu'il remplit toute la fenêtre et fait crasher le programme.
 
